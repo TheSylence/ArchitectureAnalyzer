@@ -5,6 +5,12 @@
         "forTypes": { "name": "*Attribute" },
         "baseType": { "fullName": "System.Attribute" }
       }
+    },
+    {
+      "mustImplement": {
+        "forTypes": { "name": "*Disposable" },
+        "interface": { "fullName": "System.IDisposable" }
+      }
     }
   ]
 }

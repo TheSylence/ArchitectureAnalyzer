@@ -30,9 +30,9 @@ The schema for this file is:
 ```json
 {
     "rules": [
-      { <rule> },
-      { <rule> },
-      ...
+      "<rule>",
+      "<rule>",
+      "..."
     ]
 }
 ```

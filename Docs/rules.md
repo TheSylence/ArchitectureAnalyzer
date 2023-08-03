@@ -1,4 +1,27 @@
-﻿# Matchers
+﻿# Rules
+
+Generally a rule is defined as follows:
+```json
+{
+  "<key>": {
+    "forTypes": "<matcher>",
+    "...": "..."
+  }
+}
+```
+
+Where `<key>` is the key of the rule, `<matcher>` is a matcher that determines which types the rule should be applied to and `...` are the properties of the rule.
+
+## Existing rules
+
+| Rule ID | Key                           |
+|---------|-------------------------------|
+| AA0001  | [mustImplement](AA0001.md)    |
+| AA0002  | [mustInherit](AA0002.md)      |
+| AA0003  | [mustNotImplement](AA0003.md) |
+| AA0004  | [mustNotInherit](AA0004.md)   |
+
+# Matchers
 
 Matchers are used to match a set of types. 
 They are used in every rule to determine if the rule should be applied to a given type via the `forTypes` property.
@@ -187,12 +210,3 @@ Matches types that do not match the given matcher.
 { "not": { "name": "MyType" } }
 ```
 Matches all types that are not named *MyType*.
-
-# Rules
-
-| Rule ID | Category | Severity | Details                       |
-|---------|----------|----------|-------------------------------|
-| AA0001  | Design   | Warning  | [MustImplement](AA0001.md)    |
-| AA0002  | Design   | Warning  | [MustInherit](AA0002.md)      |
-| AA0003  | Design   | Warning  | [MustNotImplement](AA0003.md) |
-| AA0004  | Design   | Warning  | [MustNotInherit](AA0004.md)   |
