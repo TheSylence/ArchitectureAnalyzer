@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using ArchitectureAnalyzer.Tests.Helper;
+﻿using ArchitectureAnalyzer.Tests.Helper;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 
 namespace ArchitectureAnalyzer.Tests;

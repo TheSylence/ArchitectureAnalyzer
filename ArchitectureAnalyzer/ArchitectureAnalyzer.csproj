@@ -9,6 +9,22 @@
 		<Nullable>enable</Nullable>
 		<NoWarn>RS2008</NoWarn>
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<PackageId>ArchitectureAnalyzer</PackageId>
+		<Authors>Matthias Specht</Authors>
+		<Title>ArchitectureAnalyzer</Title>
+		<Description>A set of roslyn analyzers that allow you to define architectural rules for your codebase.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/TheSylence/ArchitectureAnalyzer</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/TheSylence/ArchitectureAnalyzer</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="../README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
