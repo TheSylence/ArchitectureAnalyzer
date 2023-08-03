@@ -1,0 +1,54 @@
+﻿#file: noinspection SpellCheckingInspection
+name: Release
+on:
+  push:
+    tags:
+      - '*'
+  
+jobs:
+    build:
+      name: Build & Test
+      runs-on: ubuntu-latest
+        
+      env:
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+        
+      steps:
+        - uses: actions/checkout@v3
+            
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: '7.0.x'
+            
+        - name: Install changey
+          run: dotnet tool install --global Changey
+            
+        - name: Extract version from tag name
+          uses: olegtarasov/get-tag@v2.1.2
+          id: tagName
+            
+        - name: Build
+          run: dotnet build -c Release
+            
+        - name: Test
+          run: dotnet test -c Release --no-build
+          
+        - name: Pack
+          run: dotnet pack -c Release --include-symbols /p:PackageVersion=${{ steps.tagName.outputs.tag }} /p:Version=${{ steps.tagName.outputs.tag }} /p:FileVersion=${{ steps.tagName.outputs.tag }} /p:AssemblyVersion=${{ steps.tagName.outputs.tag }} -o nupkg
+          
+        - name: Push nuget package
+          run: dotnet nuget push ./nupkg/*.nupkg --skip-duplicate -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+        
+        - name: Extract Changelog
+          run: changey extract ${{ steps.tagName.outputs.tag }} -t nupgk/changelog.md
+          
+        - name: Create Release
+          uses: ncipollo/release-action@v1
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            artifacts: "nupkg/*.nupkg"
+            bodyFile: "nupkg/changelog.md"
+            

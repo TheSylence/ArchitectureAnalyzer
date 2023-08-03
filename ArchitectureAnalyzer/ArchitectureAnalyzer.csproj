@@ -1,36 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<LangVersion>latest</LangVersion>
-		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<Nullable>enable</Nullable>
-		<NoWarn>RS2008</NoWarn>
-	</PropertyGroup>
-	
-	<PropertyGroup>
-		<PackageId>ArchitectureAnalyzer</PackageId>
-		<Authors>Matthias Specht</Authors>
-		<Title>ArchitectureAnalyzer</Title>
-		<Description>A set of roslyn analyzers that allow you to define architectural rules for your codebase.</Description>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/TheSylence/ArchitectureAnalyzer</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/TheSylence/ArchitectureAnalyzer</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
-	
-	<ItemGroup>
-		<None Include="../README.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Nullable>enable</Nullable>
+        <NoWarn>RS2008</NoWarn>
+    </PropertyGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
-	</ItemGroup>
+    <PropertyGroup>
+        <PackageId>ArchitectureAnalyzer</PackageId>
+        <Authors>Matthias Specht</Authors>
+        <Title>ArchitectureAnalyzer</Title>
+        <Copyright>Copyright (c) Matthias Specht 2023</Copyright>
+        <Description>A set of roslyn analyzers that allow you to define architectural rules for your codebase.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/TheSylence/ArchitectureAnalyzer</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/TheSylence/ArchitectureAnalyzer</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <NoWarn>$(NoWarn);AA*</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="NugetReadme.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    </ItemGroup>
 </Project>
