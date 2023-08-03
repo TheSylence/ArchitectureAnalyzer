@@ -187,3 +187,12 @@ Matches types that do not match the given matcher.
 { "not": { "name": "MyType" } }
 ```
 Matches all types that are not named *MyType*.
+
+# Rules
+
+| Rule ID | Category | Severity | Details                       |
+|---------|----------|----------|-------------------------------|
+| AA0001  | Design   | Warning  | [MustImplement](AA0001.md)    |
+| AA0002  | Design   | Warning  | [MustInherit](AA0002.md)      |
+| AA0003  | Design   | Warning  | [MustNotImplement](AA0003.md) |
+| AA0004  | Design   | Warning  | [MustNotInherit](AA0004.md)   |

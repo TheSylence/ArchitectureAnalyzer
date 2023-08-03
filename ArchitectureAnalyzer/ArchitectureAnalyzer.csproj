@@ -7,6 +7,7 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<Nullable>enable</Nullable>
+		<NoWarn>RS2008</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,10 +17,5 @@
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
-		<AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
 	</ItemGroup>
 </Project>
