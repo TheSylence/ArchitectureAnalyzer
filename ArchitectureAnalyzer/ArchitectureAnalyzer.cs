@@ -1,13 +1,11 @@
 ﻿using System.Collections.Immutable;
 using ArchitectureAnalyzer.AnalyzerRules;
 using ArchitectureAnalyzer.AnalyzerRules.Rules;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace ArchitectureAnalyzer;
 
-[PublicAPI]
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class ArchitectureAnalyzer : DiagnosticAnalyzer
 {

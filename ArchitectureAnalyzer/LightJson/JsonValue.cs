@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
 using LightJson.Serialization;
 
 #nullable disable
@@ -246,7 +245,6 @@ namespace LightJson
 		/// <summary>
 		/// Gets this value as an JsonObject.
 		/// </summary>
-		[CanBeNull]
 		public JsonObject AsJsonObject
 		{
 			get
@@ -260,7 +258,6 @@ namespace LightJson
 		/// <summary>
 		/// Gets this value as an JsonArray.
 		/// </summary>
-		[CanBeNull]
 		public JsonArray AsJsonArray
 		{
 			get
