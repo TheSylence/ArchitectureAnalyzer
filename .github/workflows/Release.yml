@@ -43,7 +43,7 @@ jobs:
           run: dotnet nuget push ./nupkg/*.nupkg --skip-duplicate -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
         
         - name: Extract Changelog
-          run: changey extract ${{ steps.tagName.outputs.tag }} -t nupgk/changelog.md
+          run: changey extract ${{ steps.tagName.outputs.tag }} -t nupgk/changelog.md -v
           
         - name: Create Release
           uses: ncipollo/release-action@v1

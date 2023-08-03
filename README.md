@@ -1,4 +1,9 @@
 # ArchitectureAnalyzer
+
+![GitHub](https://img.shields.io/github/license/TheSylence/ArchitectureAnalyzer)
+![Nuget](https://img.shields.io/nuget/v/ArchitectureAnalyzer)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/TheSylence/ArchitectureAnalyzer/CI.yml)
+
 Roslyn analyzers that allow you to define architectural rules for your codebase
 
 # Installation

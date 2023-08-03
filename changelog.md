@@ -12,3 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MustNotInherit rule
 
 
+[0.1]: https://github.com/TheSylence/ArchitectureAnalyzer/releases/tag/0.1
+<!-- Release: %URL%/releases/tag/%VERSION% -->
+<!-- Compare: %URL%/compare/%OLD_VERSION%...%NEW_VERSION% -->
+<!-- BaseUrl: https://github.com/TheSylence/ArchitectureAnalyzer -->
