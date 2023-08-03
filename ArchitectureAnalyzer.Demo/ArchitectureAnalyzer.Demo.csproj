@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="architecture.rules.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ArchitectureAnalyzer\ArchitectureAnalyzer.csproj" OutputItemType="Analyzer" />
+    </ItemGroup>
+</Project>

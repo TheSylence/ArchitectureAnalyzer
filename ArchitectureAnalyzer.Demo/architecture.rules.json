@@ -1,0 +1,10 @@
+﻿{
+  "rules": [
+    {
+      "mustInherit": {
+        "forTypes": { "name": "*Attribute" },
+        "baseType": { "fullName": "System.Attribute" }
+      }
+    }
+  ]
+}
