@@ -11,13 +11,6 @@ internal sealed class SymbolBuilder
 
 		_symbol.Locations.Returns(new[] { Location.None }.ToImmutableArray());
 	}
-	
-	public SymbolBuilder WithGenericArguments(params INamedTypeSymbol[] genericArguments)
-	{
-		_symbol.TypeArguments.Returns(genericArguments.Cast<ITypeSymbol>().ToImmutableArray());
-		_symbol.IsGenericType.Returns(true);
-		return this;
-	}
 
 	public INamedTypeSymbol Build() => _symbol;
 
@@ -41,6 +34,13 @@ internal sealed class SymbolBuilder
 	public SymbolBuilder WithBaseType(string baseType)
 	{
 		_symbol.BaseType.Returns(_ => new SymbolBuilder().WithName(baseType).Build());
+		return this;
+	}
+
+	public SymbolBuilder WithGenericArguments(params INamedTypeSymbol[] genericArguments)
+	{
+		_symbol.TypeArguments.Returns(genericArguments.Cast<ITypeSymbol>().ToImmutableArray());
+		_symbol.IsGenericType.Returns(true);
 		return this;
 	}
 

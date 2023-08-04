@@ -7,7 +7,7 @@ public sealed class BasicSerializationTests
 	[Fact]
 	public void ParseExampleMessage()
 	{
-		var message = @"
+		const string message = @"
 				{
 					""menu"": [
 						""home"",

@@ -10,10 +10,10 @@ internal sealed class MockAttributeData : AttributeData
 		CommonAttributeClass = symbol;
 	}
 
-	protected override SyntaxReference? CommonApplicationSyntaxReference { get; } = null;
+	protected override SyntaxReference? CommonApplicationSyntaxReference => null;
 
 	protected override INamedTypeSymbol? CommonAttributeClass { get; }
-	protected override IMethodSymbol? CommonAttributeConstructor { get; } = null;
+	protected override IMethodSymbol? CommonAttributeConstructor => null;
 
 	protected override ImmutableArray<TypedConstant> CommonConstructorArguments =>
 		ImmutableArray<TypedConstant>.Empty;
