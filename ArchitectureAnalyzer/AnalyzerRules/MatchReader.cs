@@ -17,6 +17,8 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 			"or" => ReadOr(matcher),
 			"and" => ReadAnd(matcher),
 			"generic" => ReadGeneric(matcher),
+			"implements" => ReadImplements(matcher),
+			"inherits" => ReadInherits(matcher),
 			_ => throw new NotSupportedException($"Unknown matcher type '{matcherType}'.")
 		};
 	}
@@ -74,6 +76,42 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 		{
 			Type = typeMatcher,
 			TypeArguments = typeArgumentMatchers.ToArray()
+		};
+	}
+
+	private ImplementsMatcher ReadImplements(JsonObject matcher)
+	{
+		var inner = matcher["implements"].AsJsonObject;
+		if( inner is null )
+			throw new AnalyzerException("Implements matcher must have a matcher as child.");
+		
+		var type = inner["type"].AsJsonObject;
+		if (type is null)
+			throw new AnalyzerException("Implements matcher must have a type as child.");
+
+		var typeMatcher = ReadMatcher(type);
+
+		return new ImplementsMatcher
+		{
+			Type = typeMatcher
+		};
+	}
+
+	private InheritsMatcher ReadInherits(JsonObject matcher)
+	{
+		var inner = matcher["inherits"].AsJsonObject;
+		if( inner is null )
+			throw new AnalyzerException("Inherits matcher must have a matcher as child.");
+		
+		var type = inner["type"].AsJsonObject;
+		if (type is null)
+			throw new AnalyzerException("Inherits matcher must have a type as child.");
+
+		var typeMatcher = ReadMatcher(type);
+
+		return new InheritsMatcher
+		{
+			Type = typeMatcher
 		};
 	}
 

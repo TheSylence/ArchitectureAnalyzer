@@ -61,6 +61,41 @@ public sealed class MatchReaderTests
 		genericMatcher.TypeArguments.Should().HaveCount(1).And
 			.ContainSingle(x => x is NameMatcher && (x as NameMatcher)!.Name == "GenericName");
 	}
+
+	[Fact]
+	public void Reads_ImplementsMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "implements": { "type": {"name": "InterfaceName"} } }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<ImplementsMatcher>().Which.Type.Should()
+			.BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
+	}
+
+	[Fact]
+	public void Reads_InheritsMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "inherits": { "type": {"name": "InterfaceName"} } }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<InheritsMatcher>().Which.Type.Should()
+			.BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
+	}
+
 	[Fact]
 	public void Reads_NameMatcher()
 	{

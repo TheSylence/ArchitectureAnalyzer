@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Matcher for generic types
 
+### Fixed
+- Implements matcher not loaded from rules
+- Inherits matcher not loaded from rules
+
 ## [0.1] - 2023-08-04
 ### Added
 - MustImplement rule
