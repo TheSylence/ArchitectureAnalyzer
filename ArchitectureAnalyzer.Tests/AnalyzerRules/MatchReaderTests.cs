@@ -43,6 +43,25 @@ public sealed class MatchReaderTests
 	}
 
 	[Fact]
+	public void Reads_GenericMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "generic": { "type": {"name": "InterfaceName"}, "typeArguments": [ {"name": "GenericName"} ] } }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<GenericMatcher>();
+		var genericMatcher = (result as GenericMatcher)!;
+		genericMatcher.Type.Should().BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
+		genericMatcher.TypeArguments.Should().HaveCount(1).And
+			.ContainSingle(x => x is NameMatcher && (x as NameMatcher)!.Name == "GenericName");
+	}
+	[Fact]
 	public void Reads_NameMatcher()
 	{
 		// Arrange

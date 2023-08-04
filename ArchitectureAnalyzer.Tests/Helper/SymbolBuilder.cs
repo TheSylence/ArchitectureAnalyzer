@@ -11,6 +11,13 @@ internal sealed class SymbolBuilder
 
 		_symbol.Locations.Returns(new[] { Location.None }.ToImmutableArray());
 	}
+	
+	public SymbolBuilder WithGenericArguments(params INamedTypeSymbol[] genericArguments)
+	{
+		_symbol.TypeArguments.Returns(genericArguments.Cast<ITypeSymbol>().ToImmutableArray());
+		_symbol.IsGenericType.Returns(true);
+		return this;
+	}
 
 	public INamedTypeSymbol Build() => _symbol;
 

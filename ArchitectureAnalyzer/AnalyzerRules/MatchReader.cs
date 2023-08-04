@@ -16,6 +16,7 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 			"not" => ReadNot(matcher),
 			"or" => ReadOr(matcher),
 			"and" => ReadAnd(matcher),
+			"generic" => ReadGeneric(matcher),
 			_ => throw new NotSupportedException($"Unknown matcher type '{matcherType}'.")
 		};
 	}
@@ -46,6 +47,35 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	{
 		FullName = matcher["fullName"].AsString
 	};
+
+	private GenericMatcher ReadGeneric(JsonObject matcher)
+	{
+		var inner = matcher["generic"].AsJsonObject;
+		if (inner is null)
+			throw new AnalyzerException("Generic matcher must have a matcher as child.");
+		
+		var type = inner["type"].AsJsonObject;
+		if (type is null)
+			throw new AnalyzerException("Generic matcher must have a type as child.");
+
+		var typeArguments = inner["typeArguments"].AsJsonArray;
+		if (typeArguments is null)
+			throw new AnalyzerException("Generic matcher must have type arguments as child.");
+
+		var typeMatcher = ReadMatcher(type);
+		var typeArgumentMatchers = new List<Matcher>();
+		foreach (var typeArgument in typeArguments)
+		{
+			var typeArgumentMatcher = ReadMatcher(typeArgument.AsJsonObject);
+			typeArgumentMatchers.Add(typeArgumentMatcher);
+		}
+
+		return new GenericMatcher
+		{
+			Type = typeMatcher,
+			TypeArguments = typeArgumentMatchers.ToArray()
+		};
+	}
 
 	private NameMatcher ReadName(JsonObject matcher) => new()
 	{

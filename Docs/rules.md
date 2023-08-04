@@ -169,7 +169,7 @@ Matches types that match all of the given matchers.
 
 ### Syntax
 ```json
-{ "and": [ "<matcher>", "<matcher>", ... ] }
+{ "and": [ "<matcher>", "<matcher>", "..." ] }
 ```
 
 ### Examples
@@ -185,7 +185,7 @@ Matches types that match any of the given matchers.
 
 ### Syntax
 ```json
-{ "or": [ "<matcher>", "<matcher>", ... ] }
+{ "or": [ "<matcher>", "<matcher>", "..." ] }
 ```
 
 ### Examples
@@ -210,3 +210,25 @@ Matches types that do not match the given matcher.
 { "not": { "name": "MyType" } }
 ```
 Matches all types that are not named *MyType*.
+
+## Generic
+
+Matches generic types.
+
+### Syntax
+```json
+{
+  "generic": { 
+      "type": "<matcher>", 
+      "typeArguments": [ "<matcher>", "<matcher>", "..."] 
+    } 
+}
+```
+
+### Examples
+
+```json
+{ "generic": { "type": { "name": "MyType" }, "typeArguments": [ { "name": "MyTypeArgument" } ] } }
+```
+
+Matches all types that are generic and have the type *MyType* and the type argument *MyTypeArgument*.
