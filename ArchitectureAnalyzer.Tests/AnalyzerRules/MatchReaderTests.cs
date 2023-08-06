@@ -129,6 +129,35 @@ public sealed class MatchReaderTests
 			.BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
 	}
 
+	[Theory]
+	[InlineData("class", IsKind.Class)]
+	[InlineData("interface", IsKind.Interface)]
+	[InlineData("struct", IsKind.Struct)]
+	[InlineData("enum", IsKind.Enum)]
+	[InlineData("static", IsKind.Static)]
+	[InlineData("abstract", IsKind.Abstract)]
+	[InlineData("sealed", IsKind.Sealed)]
+	[InlineData("public", IsKind.Public)]
+	[InlineData("internal", IsKind.Internal)]
+	[InlineData("private", IsKind.Private)]
+	[InlineData("protected", IsKind.Protected)]
+	[InlineData("class,static", IsKind.Class | IsKind.Static)]
+	[InlineData("interface,public", IsKind.Interface | IsKind.Public)]
+	[InlineData("class,static,public", IsKind.Class | IsKind.Static | IsKind.Public)]
+	public void Reads_IsMatcher(string kindString, IsKind expectedKind)
+	{
+		// Arrange
+		var json = $"{{ \"is\": \"{kindString}\" }}";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<IsMatcher>().Which.Kind.Should().Be(expectedKind);
+	}
+
 	[Fact]
 	public void Reads_OrMatcher()
 	{

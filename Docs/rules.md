@@ -238,3 +238,45 @@ Matches generic types.
 ```
 
 Matches all types that are generic and have the type *MyType* and the type argument *MyTypeArgument*.
+
+## Is
+
+Matches types that are of a specific typeKind, accessibility or modifier.
+
+Possible kind values are:
+- class
+- struct
+- interface
+- enum
+- public
+- private
+- protected
+- internal
+- abstract
+- sealed
+- static
+
+### Syntax
+```json
+{ "is": "<kind>,<kind>,..." }
+```
+
+### Examples
+
+```json
+{ "is": "class" }
+```
+
+Matches all types that are classes.
+
+```json
+{ "is": "public" }
+```
+
+Matches all types that are public.
+
+```json
+{ "is": "abstract,public" }
+```
+
+Matches all types that are abstract and public.

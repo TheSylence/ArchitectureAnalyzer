@@ -19,6 +19,7 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 			"generic" => ReadGeneric(matcher),
 			"implements" => ReadImplements(matcher),
 			"inherits" => ReadInherits(matcher),
+			"is" => ReadIs(matcher),
 			_ => throw new NotSupportedException($"Unknown matcher type '{matcherType}'.")
 		};
 	}
@@ -55,7 +56,7 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 		var inner = matcher["generic"].AsJsonObject;
 		if (inner is null)
 			throw new AnalyzerException("Generic matcher must have a matcher as child.");
-		
+
 		var type = inner["type"].AsJsonObject;
 		if (type is null)
 			throw new AnalyzerException("Generic matcher must have a type as child.");
@@ -82,9 +83,9 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private ImplementsMatcher ReadImplements(JsonObject matcher)
 	{
 		var inner = matcher["implements"].AsJsonObject;
-		if( inner is null )
+		if (inner is null)
 			throw new AnalyzerException("Implements matcher must have a matcher as child.");
-		
+
 		var type = inner["type"].AsJsonObject;
 		if (type is null)
 			throw new AnalyzerException("Implements matcher must have a type as child.");
@@ -100,9 +101,9 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private InheritsMatcher ReadInherits(JsonObject matcher)
 	{
 		var inner = matcher["inherits"].AsJsonObject;
-		if( inner is null )
+		if (inner is null)
 			throw new AnalyzerException("Inherits matcher must have a matcher as child.");
-		
+
 		var type = inner["type"].AsJsonObject;
 		if (type is null)
 			throw new AnalyzerException("Inherits matcher must have a type as child.");
@@ -112,6 +113,22 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 		return new InheritsMatcher
 		{
 			Type = typeMatcher
+		};
+	}
+
+	private IsMatcher ReadIs(JsonObject matcher)
+	{
+		var kindString = matcher["is"].AsString;
+
+		var kind = kindString.Split(',').Select(x =>
+				Enum.TryParse<IsKind>(x.Trim(), true, out var kind)
+					? kind
+					: throw new AnalyzerException($"Unknown IsKind '{x}'."))
+			.Aggregate(IsKind.None, (kind, isKind) => kind | isKind);
+
+		return new IsMatcher
+		{
+			Kind = kind
 		};
 	}
 

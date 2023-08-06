@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Added forbidden Property to rules to replace must-not-x rules
-- Added description property to document rules
+- Forbidden Property to rules to replace must-not-x rules
+- Description property to document rules
+- IsMatcher for matching types based on kind, accessibility or modifiers
 
 ### Changed
 - Removed MustNotImplement and MustNotInherit. Replaced by forbidden property on rule
