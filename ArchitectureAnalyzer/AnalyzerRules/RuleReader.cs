@@ -37,6 +37,8 @@ internal sealed class RuleReader : JsonReader
 		}
 	}
 
+	private static string ReadDescription(JsonObject rule) => rule["description"].AsString ?? string.Empty;
+
 	private static bool ReadForbidden(JsonObject rule) => rule.ContainsKey("forbidden") && rule["forbidden"].AsBoolean;
 
 	private MustImplementRule ReadMustImplementRule(JsonObject rule)
@@ -53,7 +55,8 @@ internal sealed class RuleReader : JsonReader
 		{
 			ForTypes = _matchReader.ReadMatcher(forTypes),
 			Interface = _matchReader.ReadMatcher(interfaceMatcher),
-			Forbidden = ReadForbidden(rule)
+			Forbidden = ReadForbidden(rule),
+			Description = ReadDescription(rule)
 		};
 	}
 
@@ -71,7 +74,8 @@ internal sealed class RuleReader : JsonReader
 		{
 			ForTypes = _matchReader.ReadMatcher(forTypes),
 			BaseType = _matchReader.ReadMatcher(baseType),
-			Forbidden = ReadForbidden(rule)
+			Forbidden = ReadForbidden(rule),
+			Description = ReadDescription(rule)
 		};
 	}
 

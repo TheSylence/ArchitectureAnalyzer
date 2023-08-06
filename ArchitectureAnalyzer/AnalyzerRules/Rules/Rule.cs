@@ -7,6 +7,7 @@ internal abstract class Rule
 {
 	public Matcher ForTypes { get; set; } = default!;
 	public bool Forbidden { get; set; }
+	public string Description { get; set; } = default!;
 
 	protected abstract DiagnosticDescriptor Descriptor { get; }
 
