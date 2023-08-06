@@ -32,12 +32,12 @@ internal sealed class RuleReader : JsonReader
 			{
 				"mustImplement" => ReadMustImplementRule(ruleData),
 				"mustInherit" => ReadMustInheritRule(ruleData),
-				"mustNotImplement" => ReadMustNotImplementRule(ruleData),
-				"mustNotInherit" => ReadMustNotInheritRule(ruleData),
 				_ => throw new NotSupportedException($"Unknown rule type '{ruleType}'.")
 			};
 		}
 	}
+
+	private static bool ReadForbidden(JsonObject rule) => rule.ContainsKey("forbidden") && rule["forbidden"].AsBoolean;
 
 	private MustImplementRule ReadMustImplementRule(JsonObject rule)
 	{
@@ -52,7 +52,8 @@ internal sealed class RuleReader : JsonReader
 		return new MustImplementRule
 		{
 			ForTypes = _matchReader.ReadMatcher(forTypes),
-			Interface = _matchReader.ReadMatcher(interfaceMatcher)
+			Interface = _matchReader.ReadMatcher(interfaceMatcher),
+			Forbidden = ReadForbidden(rule)
 		};
 	}
 
@@ -69,41 +70,8 @@ internal sealed class RuleReader : JsonReader
 		return new MustInheritRule
 		{
 			ForTypes = _matchReader.ReadMatcher(forTypes),
-			BaseType = _matchReader.ReadMatcher(baseType)
-		};
-	}
-
-	private MustNotImplementRule ReadMustNotImplementRule(JsonObject rule)
-	{
-		var forTypes = rule["forTypes"].AsJsonObject;
-		if (forTypes is null)
-			throw new AnalyzerException("MustNotImplement rule must have a forTypes matcher.");
-
-		var interfaceMatcher = rule["interface"].AsJsonObject;
-		if (interfaceMatcher is null)
-			throw new AnalyzerException("MustNotImplement rule must have a interface matcher.");
-
-		return new MustNotImplementRule
-		{
-			ForTypes = _matchReader.ReadMatcher(forTypes),
-			Interface = _matchReader.ReadMatcher(interfaceMatcher)
-		};
-	}
-
-	private MustNotInheritRule ReadMustNotInheritRule(JsonObject rule)
-	{
-		var forTypes = rule["forTypes"].AsJsonObject;
-		if (forTypes is null)
-			throw new AnalyzerException("MustNotInherit rule must have a forTypes matcher.");
-
-		var baseType = rule["baseType"].AsJsonObject;
-		if (baseType is null)
-			throw new AnalyzerException("MustNotInherit rule must have a baseType matcher.");
-
-		return new MustNotInheritRule
-		{
-			ForTypes = _matchReader.ReadMatcher(forTypes),
-			BaseType = _matchReader.ReadMatcher(baseType)
+			BaseType = _matchReader.ReadMatcher(baseType),
+			Forbidden = ReadForbidden(rule)
 		};
 	}
 

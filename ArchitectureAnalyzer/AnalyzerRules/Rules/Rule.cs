@@ -6,6 +6,7 @@ namespace ArchitectureAnalyzer.AnalyzerRules.Rules;
 internal abstract class Rule
 {
 	public Matcher ForTypes { get; set; } = default!;
+	public bool Forbidden { get; set; }
 
 	protected abstract DiagnosticDescriptor Descriptor { get; }
 

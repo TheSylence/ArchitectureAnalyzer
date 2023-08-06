@@ -31,7 +31,8 @@ public sealed class RuleReaderIntegrationTests
 		                    }
 		                    },
 		                    {
-		                    "mustNotImplement": {
+		                    "mustImplement": {
+		                    "forbidden": true,
 		                    "forTypes": {
 		                    "generic": {
 		                    "type": { "name": "GenericType" },
@@ -42,7 +43,8 @@ public sealed class RuleReaderIntegrationTests
 		                    }
 		                    },
 		                    {
-		                    "mustNotInherit": {
+		                    "mustInherit": {
+		                    "forbidden": true,
 		                    "forTypes": { "not": { "name": "MustNotInheritName" } },
 		                    "baseType": {
 		                    "or": [
@@ -69,6 +71,8 @@ public sealed class RuleReaderIntegrationTests
 		{
 			var rule = rules[0].As<MustImplementRule>();
 
+			rule.Forbidden.Should().BeFalse();
+
 			rule.ForTypes.Should().BeOfType<AndMatcher>()
 				.Which.Matchers.Should().HaveCount(2)
 				.And.ContainSingle(m => m is NameMatcher && m.As<NameMatcher>().Name == "*MustImplementName")
@@ -82,6 +86,8 @@ public sealed class RuleReaderIntegrationTests
 		{
 			var rule = rules[1].As<MustInheritRule>();
 
+			rule.Forbidden.Should().BeFalse();
+
 			rule.ForTypes.Should().BeOfType<FullNameMatcher>()
 				.Which.FullName.Should().Be("MustInheritFullName");
 
@@ -89,9 +95,11 @@ public sealed class RuleReaderIntegrationTests
 				.Which.FullName.Should().Be("MustInheritBaseType");
 		}
 
-		rules[2].Should().BeOfType<MustNotImplementRule>();
+		rules[2].Should().BeOfType<MustImplementRule>();
 		{
-			var rule = rules[2].As<MustNotImplementRule>();
+			var rule = rules[2].As<MustImplementRule>();
+
+			rule.Forbidden.Should().BeTrue();
 
 			rule.ForTypes.Should().BeOfType<GenericMatcher>()
 				.Which.Type.Should().BeOfType<NameMatcher>()
@@ -105,9 +113,11 @@ public sealed class RuleReaderIntegrationTests
 				.Which.Name.Should().Be("MustNotImplementInterface");
 		}
 
-		rules[3].Should().BeOfType<MustNotInheritRule>();
+		rules[3].Should().BeOfType<MustInheritRule>();
 		{
-			var rule = rules[3].As<MustNotInheritRule>();
+			var rule = rules[3].As<MustInheritRule>();
+
+			rule.Forbidden.Should().BeTrue();
 
 			rule.ForTypes.Should().BeOfType<NotMatcher>()
 				.Which.Matcher.Should().BeOfType<NameMatcher>()
