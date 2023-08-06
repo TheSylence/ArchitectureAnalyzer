@@ -11,7 +11,16 @@ internal sealed class InheritsMatcher : Matcher
 		if (symbol.BaseType is null)
 			return false;
 
-		return Type.Matches(symbol.BaseType);
+		var baseType = symbol.BaseType;
+
+		while (!Type.Matches(baseType))
+		{
+			baseType = baseType.BaseType;
+			if (baseType is null || baseType.SpecialType != SpecialType.None)
+				return false;
+		}
+
+		return true;
 	}
 
 	public override string ToString() => $"Inherits: {{{Type}}}";

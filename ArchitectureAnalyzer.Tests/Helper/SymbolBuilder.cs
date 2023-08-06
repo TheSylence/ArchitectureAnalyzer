@@ -10,9 +10,16 @@ internal sealed class SymbolBuilder
 		_symbol = Substitute.For<INamedTypeSymbol>();
 
 		_symbol.Locations.Returns(new[] { Location.None }.ToImmutableArray());
+		_symbol.BaseType.Returns((INamedTypeSymbol?)null);
 	}
 
 	public INamedTypeSymbol Build() => _symbol;
+	
+	public SymbolBuilder WithSpecialType(SpecialType specialType)
+	{
+		_symbol.SpecialType.Returns(specialType);
+		return this;
+	}
 
 	public SymbolBuilder WithAttribute(string name)
 	{

@@ -66,9 +66,12 @@ public sealed class ArchitectureAnalyzer : DiagnosticAnalyzer
 
 					symbolAnalysisContext.ReportDiagnostic(diagnostic);
 				},
-				SymbolKind.NamedType);
+				SymbolKindsForRules);
 		}
 	}
 
 	private readonly RuleReader _ruleReader;
+
+	private static readonly ImmutableArray<SymbolKind>
+		SymbolKindsForRules = ImmutableArray.Create(SymbolKind.NamedType);
 }
