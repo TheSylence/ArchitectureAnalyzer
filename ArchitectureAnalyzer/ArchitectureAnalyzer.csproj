@@ -14,7 +14,6 @@
         <PackageId>ArchitectureAnalyzer</PackageId>
         <Authors>Matthias Specht</Authors>
         <Title>ArchitectureAnalyzer</Title>
-        <Copyright>Copyright (c) Matthias Specht 2023</Copyright>
         <Description>A set of roslyn analyzers that allow you to define architectural rules for your codebase.</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/TheSylence/ArchitectureAnalyzer</PackageProjectUrl>
@@ -27,7 +26,6 @@
     
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-        <NoWarn>$(NoWarn);AA*</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
