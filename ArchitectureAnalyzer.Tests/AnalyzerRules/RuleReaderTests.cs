@@ -99,6 +99,20 @@ public sealed class RuleReaderTests
 	}
 
 	[Fact]
+	public void Reads_RelatedTypeExistsRule()
+	{
+		// Arrange
+		const string json =
+			"""{ "rules": [{ "relatedTypeExists": { "forTypes": {}, "relatedType": {} } }] }""";
+
+		// Act
+		var actual = _sut.Read(json).ToList();
+
+		// Assert
+		actual.Should().ContainSingle(r => r is RelatedTypeExistsRule);
+	}
+
+	[Fact]
 	public void Throws_WhenJsonIsInvalid()
 	{
 		// Arrange

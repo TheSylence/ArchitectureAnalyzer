@@ -32,6 +32,7 @@ internal sealed class RuleReader : JsonReader
 			{
 				"mustImplement" => ReadMustImplementRule(ruleData),
 				"mustInherit" => ReadMustInheritRule(ruleData),
+				"relatedTypeExists" => ReadRelatedTypeExistsRule(ruleData),
 				_ => throw new NotSupportedException($"Unknown rule type '{ruleType}'.")
 			};
 		}
@@ -74,6 +75,25 @@ internal sealed class RuleReader : JsonReader
 		{
 			ForTypes = _matchReader.ReadMatcher(forTypes),
 			BaseType = _matchReader.ReadMatcher(baseType),
+			Forbidden = ReadForbidden(rule),
+			Description = ReadDescription(rule)
+		};
+	}
+
+	private RelatedTypeExistsRule ReadRelatedTypeExistsRule(JsonObject rule)
+	{
+		var forTypes = rule["forTypes"].AsJsonObject;
+		if (forTypes is null)
+			throw new AnalyzerException("RelatedTypeExists rule must have a forTypes matcher.");
+
+		var relatedType = rule["relatedType"].AsJsonObject;
+		if (relatedType is null)
+			throw new AnalyzerException("RelatedTypeExists rule must have a relatedType matcher.");
+
+		return new RelatedTypeExistsRule
+		{
+			ForTypes = _matchReader.ReadMatcher(forTypes),
+			RelatedType = _matchReader.ReadMatcher(relatedType),
 			Forbidden = ReadForbidden(rule),
 			Description = ReadDescription(rule)
 		};

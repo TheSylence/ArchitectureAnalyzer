@@ -24,6 +24,15 @@ internal sealed class IsMatcher : Matcher
 	{
 		var parts = new List<string>();
 
+		AddAccessibilityDisplayParts(parts);
+		AddModifierDisplayParts(parts);
+		AddTypeKindDisplayParts(parts);
+
+		return "Is: " + string.Join(" ", parts);
+	}
+
+	private void AddAccessibilityDisplayParts(List<string> parts)
+	{
 		if (Kind.HasFlag(IsKind.Public))
 			parts.Add("public");
 		else if (Kind.HasFlag(IsKind.Private))
@@ -32,14 +41,20 @@ internal sealed class IsMatcher : Matcher
 			parts.Add("protected");
 		else if (Kind.HasFlag(IsKind.Internal))
 			parts.Add("internal");
+	}
 
+	private void AddModifierDisplayParts(List<string> parts)
+	{
 		if (Kind.HasFlag(IsKind.Abstract))
 			parts.Add("abstract");
 		else if (Kind.HasFlag(IsKind.Sealed))
 			parts.Add("sealed");
 		else if (Kind.HasFlag(IsKind.Static))
 			parts.Add("static");
+	}
 
+	private void AddTypeKindDisplayParts(List<string> parts)
+	{
 		if (Kind.HasFlag(IsKind.Class))
 			parts.Add("class");
 		else if (Kind.HasFlag(IsKind.Interface))
@@ -48,8 +63,6 @@ internal sealed class IsMatcher : Matcher
 			parts.Add("struct");
 		else if (Kind.HasFlag(IsKind.Enum))
 			parts.Add("enum");
-
-		return "Is: " + string.Join(" ", parts);
 	}
 
 	private bool MatchAccessibility(INamedTypeSymbol symbol)

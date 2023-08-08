@@ -50,9 +50,9 @@ public sealed class ArchitectureAnalyzer : DiagnosticAnalyzer
 
 	private void OnCompilationStart(CompilationStartAnalysisContext context)
 	{
-		var rules = FindRulesIn(context.Options.AdditionalFiles, context.CancellationToken);
+		var rules = FindRulesIn(context.Options.AdditionalFiles, context.CancellationToken).ToList();
 
-		foreach (var rule in rules)
+		foreach (var rule in (IEnumerable<Rule>)rules)
 		{
 			context.RegisterSymbolAction(
 				symbolAnalysisContext =>
@@ -60,7 +60,7 @@ public sealed class ArchitectureAnalyzer : DiagnosticAnalyzer
 					if (symbolAnalysisContext.Symbol is not INamedTypeSymbol symbol)
 						return;
 
-					var diagnostic = rule.Evaluate(symbol);
+					var diagnostic = rule.Evaluate(symbol, symbolAnalysisContext.Compilation);
 					if (diagnostic is null)
 						return;
 

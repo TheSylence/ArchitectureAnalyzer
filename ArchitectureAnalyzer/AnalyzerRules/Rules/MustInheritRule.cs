@@ -10,7 +10,7 @@ internal sealed class MustInheritRule : Rule
 	protected override DiagnosticDescriptor Descriptor =>
 		Forbidden ? Diagnostics.MustNotInherit : Diagnostics.MustInherit;
 
-	protected override Diagnostic? EvaluateInternal(INamedTypeSymbol symbol)
+	protected override Diagnostic? EvaluateInternal(INamedTypeSymbol symbol, Compilation compilation)
 	{
 		if (Forbidden)
 		{

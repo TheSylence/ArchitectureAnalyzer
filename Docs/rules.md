@@ -14,18 +14,20 @@ Generally a rule is defined as follows:
 
 Where `<key>` is the key of the rule, `<matcher>` is a matcher that determines which types the rule should be applied to and `...` are the properties of the rule.
 
-Forbidden is a boolean that determines if the rule is a must or a must not rule. (default: false)
+Forbidden is a boolean that determines if the rule is a must or a must not rule. (default: false = must rule)
 
 Description is a string that describes the rule. It does not affect the rule or its behavior and is solely for documentation purposes.
 
 ## Existing rules
 
-| Rule ID | Key                        | Forbidden |
-|---------|----------------------------|-----------|
-| AA0001  | [mustImplement](AA0001.md) | false     |
-| AA0002  | [mustInherit](AA0002.md)   | false     |
-| AA0003  | [mustImplement](AA0003.md) | true      |
-| AA0004  | [mustInherit](AA0004.md)   | true      |
+| Rule ID | Key                            | Forbidden |
+|---------|--------------------------------|-----------|
+| AA0001  | [mustImplement](AA0001.md)     | false     |
+| AA0002  | [mustInherit](AA0002.md)       | false     |
+| AA0003  | [mustImplement](AA0003.md)     | true      |
+| AA0004  | [mustInherit](AA0004.md)       | true      |
+| AA0005  | [relatedTypeExists](AA0005.md) | false     |
+| AA0006  | [relatedTypeExists](AA0005.md) | true      |
 
 # Matchers
 

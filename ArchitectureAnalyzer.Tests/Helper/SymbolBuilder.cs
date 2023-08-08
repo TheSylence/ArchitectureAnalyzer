@@ -14,12 +14,6 @@ internal sealed class SymbolBuilder
 	}
 
 	public INamedTypeSymbol Build() => _symbol;
-	
-	public SymbolBuilder WithSpecialType(SpecialType specialType)
-	{
-		_symbol.SpecialType.Returns(specialType);
-		return this;
-	}
 
 	public SymbolBuilder WithAttribute(string name)
 	{
@@ -41,6 +35,12 @@ internal sealed class SymbolBuilder
 	public SymbolBuilder WithBaseType(string baseType)
 	{
 		_symbol.BaseType.Returns(_ => new SymbolBuilder().WithName(baseType).Build());
+		return this;
+	}
+
+	public SymbolBuilder WithFullName(string name)
+	{
+		_symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Returns(name);
 		return this;
 	}
 
@@ -92,6 +92,12 @@ internal sealed class SymbolBuilder
 	public SymbolBuilder WithNoInterfaces()
 	{
 		_symbol.AllInterfaces.Returns(ImmutableArray<INamedTypeSymbol>.Empty);
+		return this;
+	}
+
+	public SymbolBuilder WithSpecialType(SpecialType specialType)
+	{
+		_symbol.SpecialType.Returns(specialType);
 		return this;
 	}
 

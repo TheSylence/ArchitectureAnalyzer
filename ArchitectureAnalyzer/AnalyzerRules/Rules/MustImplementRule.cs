@@ -10,7 +10,7 @@ internal sealed class MustImplementRule : Rule
 	protected override DiagnosticDescriptor Descriptor =>
 		Forbidden ? Diagnostics.MustNotImplement : Diagnostics.MustImplement;
 
-	protected override Diagnostic? EvaluateInternal(INamedTypeSymbol symbol)
+	protected override Diagnostic? EvaluateInternal(INamedTypeSymbol symbol, Compilation compilation)
 	{
 		var implements = symbol.AllInterfaces.Any(i => Interface.Matches(i));
         

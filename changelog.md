@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Forbidden Property to rules to replace must-not-x rules
 - Description property to document rules
 - IsMatcher for matching types based on kind, accessibility or modifiers
+- RelatedTypeExists rule to check for related types
 
-### Changed
-- Removed MustNotImplement and MustNotInherit. Replaced by forbidden property on rule
+### Removed
+- MustNotImplement and MustNotInherit. Replaced by forbidden property on rule
 
 ### Fixed
 - Inherits matcher not matching for inherited base type

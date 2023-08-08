@@ -1,12 +1,14 @@
 ﻿using ArchitectureAnalyzer.AnalyzerRules.Rules;
 using ArchitectureAnalyzer.Tests.AnalyzerRules.Matchers;
 using ArchitectureAnalyzer.Tests.Helper;
+using Microsoft.CodeAnalysis;
 
 namespace ArchitectureAnalyzer.Tests.AnalyzerRules.Rules;
 
 public sealed class MustInheritRuleTests
 {
 	private readonly MustInheritRule _sut = new();
+	private readonly Compilation _compilation = default!;
 
 	[Fact]
 	public void DoesNotViolate_WhenForbidden_WhenTypeIsNotInherited()
@@ -21,7 +23,7 @@ public sealed class MustInheritRuleTests
 		_sut.BaseType = MockMatcher.Create(true, baseType);
 
 		// Act
-		var result = _sut.Evaluate(symbol);
+		var result = _sut.Evaluate(symbol, _compilation);
 
 		// Assert
 		result.Should().BeNull();
@@ -38,7 +40,7 @@ public sealed class MustInheritRuleTests
 		_sut.ForTypes = forTypes;
 
 		// Act
-		var result = _sut.Evaluate(symbol);
+		var result = _sut.Evaluate(symbol, _compilation);
 
 		// Assert
 		result.Should().BeNull();
@@ -56,7 +58,7 @@ public sealed class MustInheritRuleTests
 		_sut.BaseType = MockMatcher.Create(true, baseType);
 
 		// Act
-		var result = _sut.Evaluate(symbol);
+		var result = _sut.Evaluate(symbol, _compilation);
 
 		// Assert
 		result.Should().BeNull();
@@ -72,7 +74,7 @@ public sealed class MustInheritRuleTests
 		_sut.ForTypes = forTypes;
 
 		// Act
-		var result = _sut.Evaluate(symbol);
+		var result = _sut.Evaluate(symbol, _compilation);
 
 		// Assert
 		result.Should().BeNull();
@@ -91,7 +93,7 @@ public sealed class MustInheritRuleTests
 		_sut.BaseType = MockMatcher.Create(true, baseType);
 
 		// Act
-		var result = _sut.Evaluate(symbol);
+		var result = _sut.Evaluate(symbol, _compilation);
 
 		// Assert
 		result.Should().NotBeNull();
@@ -109,7 +111,7 @@ public sealed class MustInheritRuleTests
 		_sut.BaseType = MockMatcher.Create(true, baseType);
 
 		// Act
-		var result = _sut.Evaluate(symbol);
+		var result = _sut.Evaluate(symbol, _compilation);
 
 		// Assert
 		result.Should().NotBeNull();

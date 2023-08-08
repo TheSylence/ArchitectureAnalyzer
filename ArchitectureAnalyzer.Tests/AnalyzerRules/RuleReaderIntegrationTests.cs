@@ -53,6 +53,16 @@ public sealed class RuleReaderIntegrationTests
 		                    ]
 		                    }
 		                    }
+		                    },
+		                    {
+		                    "relatedTypeExists": {
+		                    "relatedType": {
+		                    "implements": { "generic": {"type": {"name": "IValidator"}, "typeArguments": [ {"fullName": "%type.FullName%"}] } }
+		                    },
+		                    "forTypes": {
+		                    "name": "*Request"
+		                    }
+		                    }
 		                    }
 		                    ]
 		                    }
@@ -65,7 +75,7 @@ public sealed class RuleReaderIntegrationTests
 		// Assert
 		using var _ = new AssertionScope();
 
-		rules.Should().HaveCount(4);
+		rules.Should().HaveCount(5);
 
 		rules[0].Should().BeOfType<MustImplementRule>();
 		{
@@ -128,6 +138,23 @@ public sealed class RuleReaderIntegrationTests
 				.And.ContainSingle(m => m is NameMatcher && m.As<NameMatcher>().Name == "MustNotInheritBaseType")
 				.And.ContainSingle(m =>
 					m is FullNameMatcher && m.As<FullNameMatcher>().FullName == "MustNotInheritFullBaseType");
+		}
+
+		rules[4].Should().BeOfType<RelatedTypeExistsRule>();
+		{
+			var rule = rules[4].As<RelatedTypeExistsRule>();
+
+			rule.ForTypes.Should().BeOfType<NameMatcher>().Which.Name.Should().Be("*Request");
+
+			rule.RelatedType.Should().BeOfType<ImplementsMatcher>()
+				.Which.Type.Should().BeOfType<GenericMatcher>()
+				.Which.Type.Should().BeOfType<NameMatcher>()
+				.Which.Name.Should().Be("IValidator");
+
+			rule.RelatedType.Should().BeOfType<ImplementsMatcher>()
+				.Which.Type.Should().BeOfType<GenericMatcher>()
+				.Which.TypeArguments.Should().HaveCount(1).And.ContainSingle(x =>
+					x is FullNameMatcher && x.As<FullNameMatcher>().FullName == "%type.FullName%");
 		}
 	}
 }
