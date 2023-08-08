@@ -67,7 +67,7 @@ public sealed class MatchReaderTests
 	{
 		// Arrange
 		const string json =
-			"""{ "implements": { "type": {"name": "InterfaceName"} } }""";
+			"""{ "implements": { "name": "InterfaceName"} }""";
 
 		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
 
@@ -84,7 +84,7 @@ public sealed class MatchReaderTests
 	{
 		// Arrange
 		const string json =
-			"""{ "inherits": { "type": {"name": "InterfaceName"} } }""";
+			"""{ "inherits": { "name": "InterfaceName"} } """;
 
 		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
 

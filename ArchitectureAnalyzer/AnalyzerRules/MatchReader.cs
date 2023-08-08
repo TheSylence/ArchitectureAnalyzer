@@ -86,11 +86,7 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 		if (inner is null)
 			throw new AnalyzerException("Implements matcher must have a matcher as child.");
 
-		var type = inner["type"].AsJsonObject;
-		if (type is null)
-			throw new AnalyzerException("Implements matcher must have a type as child.");
-
-		var typeMatcher = ReadMatcher(type);
+		var typeMatcher = ReadMatcher(inner);
 
 		return new ImplementsMatcher
 		{
@@ -104,11 +100,7 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 		if (inner is null)
 			throw new AnalyzerException("Inherits matcher must have a matcher as child.");
 
-		var type = inner["type"].AsJsonObject;
-		if (type is null)
-			throw new AnalyzerException("Inherits matcher must have a type as child.");
-
-		var typeMatcher = ReadMatcher(type);
+		var typeMatcher = ReadMatcher(inner);
 
 		return new InheritsMatcher
 		{
