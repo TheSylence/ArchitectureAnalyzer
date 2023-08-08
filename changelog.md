@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Inherits matcher not matching for inherited base type
+- IsMatcher now has human readable string representation
 
 ## [0.2] - 2023-08-04
 ### Added

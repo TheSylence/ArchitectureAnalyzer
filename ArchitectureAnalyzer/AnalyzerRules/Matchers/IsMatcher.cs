@@ -20,18 +20,36 @@ internal sealed class IsMatcher : Matcher
 		return true;
 	}
 
-	private bool MatchModifier(INamedTypeSymbol symbol)
+	public override string ToString()
 	{
-		if( Kind.HasFlag(IsKind.Abstract) && !symbol.IsAbstract)
-			return false;
+		var parts = new List<string>();
 
-		if (Kind.HasFlag(IsKind.Sealed) && !symbol.IsSealed)
-			return false;
+		if (Kind.HasFlag(IsKind.Public))
+			parts.Add("public");
+		else if (Kind.HasFlag(IsKind.Private))
+			parts.Add("private");
+		else if (Kind.HasFlag(IsKind.Protected))
+			parts.Add("protected");
+		else if (Kind.HasFlag(IsKind.Internal))
+			parts.Add("internal");
 
-		if (Kind.HasFlag(IsKind.Static) && !symbol.IsStatic)
-			return false;
+		if (Kind.HasFlag(IsKind.Abstract))
+			parts.Add("abstract");
+		else if (Kind.HasFlag(IsKind.Sealed))
+			parts.Add("sealed");
+		else if (Kind.HasFlag(IsKind.Static))
+			parts.Add("static");
 
-		return true;
+		if (Kind.HasFlag(IsKind.Class))
+			parts.Add("class");
+		else if (Kind.HasFlag(IsKind.Interface))
+			parts.Add("interface");
+		else if (Kind.HasFlag(IsKind.Struct))
+			parts.Add("struct");
+		else if (Kind.HasFlag(IsKind.Enum))
+			parts.Add("enum");
+
+		return "Is: " + string.Join(" ", parts);
 	}
 
 	private bool MatchAccessibility(INamedTypeSymbol symbol)
@@ -48,6 +66,20 @@ internal sealed class IsMatcher : Matcher
 			return false;
 
 		if (Kind.HasFlag(IsKind.Internal) && accessibility != Accessibility.Internal)
+			return false;
+
+		return true;
+	}
+
+	private bool MatchModifier(INamedTypeSymbol symbol)
+	{
+		if (Kind.HasFlag(IsKind.Abstract) && !symbol.IsAbstract)
+			return false;
+
+		if (Kind.HasFlag(IsKind.Sealed) && !symbol.IsSealed)
+			return false;
+
+		if (Kind.HasFlag(IsKind.Static) && !symbol.IsStatic)
 			return false;
 
 		return true;

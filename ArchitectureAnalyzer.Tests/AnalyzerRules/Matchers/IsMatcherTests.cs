@@ -150,4 +150,33 @@ public sealed class IsMatcherTests
 		// Assert
 		result.Should().BeTrue();
 	}
+
+	[Theory]
+	[InlineData(IsKind.Public, "Is: public")]
+	[InlineData(IsKind.Internal, "Is: internal")]
+	[InlineData(IsKind.Protected, "Is: protected")]
+	[InlineData(IsKind.Private, "Is: private")]
+	[InlineData(IsKind.Abstract, "Is: abstract")]
+	[InlineData(IsKind.Sealed, "Is: sealed")]
+	[InlineData(IsKind.Static, "Is: static")]
+	[InlineData(IsKind.Class, "Is: class")]
+	[InlineData(IsKind.Interface, "Is: interface")]
+	[InlineData(IsKind.Struct, "Is: struct")]
+	[InlineData(IsKind.Enum, "Is: enum")]
+	[InlineData(IsKind.Public|IsKind.Static, "Is: public static")]
+	[InlineData(IsKind.Public|IsKind.Abstract, "Is: public abstract")]
+	[InlineData(IsKind.Public|IsKind.Sealed, "Is: public sealed")]
+	[InlineData(IsKind.Class|IsKind.Abstract, "Is: abstract class")]
+	[InlineData(IsKind.Class|IsKind.Public|IsKind.Sealed, "Is: public sealed class")]
+	public void ToString_ProducesDisplayString(IsKind kind, string expected)
+	{
+		// Arrange
+		_sut.Kind = kind;
+
+		// Act
+		var result = _sut.ToString();
+
+		// Assert
+		result.Should().Be(expected);
+	}
 }
