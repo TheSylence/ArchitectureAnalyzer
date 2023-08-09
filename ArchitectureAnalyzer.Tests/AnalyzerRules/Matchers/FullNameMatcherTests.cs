@@ -7,7 +7,7 @@ public sealed class FullNameMatcherTests
 {
 	private readonly FullNameMatcher _sut = new();
 	private readonly INamedTypeSymbol _symbol = Substitute.For<INamedTypeSymbol>();
-	
+
 	[Fact]
 	public void DoesNotMatch_WhenNameDoesNotMatch()
 	{
@@ -20,7 +20,7 @@ public sealed class FullNameMatcherTests
 		// Assert
 		result.Should().BeFalse();
 	}
-	
+
 	[Theory]
 	[InlineData("Test", "Test1*")]
 	[InlineData("Test", "*Test1")]
@@ -37,6 +37,7 @@ public sealed class FullNameMatcherTests
 		// Assert
 		result.Should().BeFalse();
 	}
+
 	[Fact]
 	public void DoesNotMatch_WhenNameIsEmpty()
 	{

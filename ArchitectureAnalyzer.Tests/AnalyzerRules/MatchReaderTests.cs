@@ -96,39 +96,6 @@ public sealed class MatchReaderTests
 			.BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
 	}
 
-	[Fact]
-	public void Reads_NameMatcher()
-	{
-		// Arrange
-		const string json =
-			"""{ "name": "InterfaceName" }""";
-
-		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
-
-		// Act
-		var result = _sut.ReadMatcher(jsonObject);
-
-		// Assert
-		result.Should().BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
-	}
-
-	[Fact]
-	public void Reads_NotMatcher()
-	{
-		// Arrange
-		const string json =
-			"""{ "not": {"name": "InterfaceName"} }""";
-
-		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
-
-		// Act
-		var result = _sut.ReadMatcher(jsonObject);
-
-		// Assert
-		result.Should().BeOfType<NotMatcher>().Which.Matcher.Should()
-			.BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
-	}
-
 	[Theory]
 	[InlineData("class", IsKind.Class)]
 	[InlineData("interface", IsKind.Interface)]
@@ -156,6 +123,55 @@ public sealed class MatchReaderTests
 
 		// Assert
 		result.Should().BeOfType<IsMatcher>().Which.Kind.Should().Be(expectedKind);
+	}
+
+	[Fact]
+	public void Reads_NameMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "name": "InterfaceName" }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
+	}
+
+	[Fact]
+	public void Reads_NamespaceMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "namespace": "Namespace" }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<NamespaceMatcher>().Which.Namespace.Should().Be("Namespace");
+	}
+
+	[Fact]
+	public void Reads_NotMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "not": {"name": "InterfaceName"} }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		var result = _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		result.Should().BeOfType<NotMatcher>().Which.Matcher.Should()
+			.BeOfType<NameMatcher>().Which.Name.Should().Be("InterfaceName");
 	}
 
 	[Fact]

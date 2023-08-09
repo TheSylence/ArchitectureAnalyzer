@@ -282,3 +282,20 @@ Matches all types that are public.
 ```
 
 Matches all types that are abstract and public.
+
+## Namespace
+
+Matches types that are in a specific namespace.
+
+### Syntax
+```json
+{ "namespace": "<namespace>" }
+```
+
+### Examples
+
+```json
+{ "namespace": "MyNamespace" }
+```
+
+Matches all types that are in the namespace *MyNamespace*.

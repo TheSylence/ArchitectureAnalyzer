@@ -20,6 +20,7 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 			"implements" => ReadImplements(matcher),
 			"inherits" => ReadInherits(matcher),
 			"is" => ReadIs(matcher),
+			"namespace" => ReadNamespace(matcher),
 			_ => throw new NotSupportedException($"Unknown matcher type '{matcherType}'.")
 		};
 	}
@@ -127,6 +128,11 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private NameMatcher ReadName(JsonObject matcher) => new()
 	{
 		Name = matcher["name"].AsString
+	};
+
+	private NamespaceMatcher ReadNamespace(JsonObject matcher) => new()
+	{
+		Namespace = matcher["namespace"].AsString
 	};
 
 	private NotMatcher ReadNot(JsonObject matcher)

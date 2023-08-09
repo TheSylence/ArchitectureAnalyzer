@@ -1,6 +1,5 @@
 ﻿using ArchitectureAnalyzer.AnalyzerRules.Matchers;
 using ArchitectureAnalyzer.AnalyzerRules.Rules;
-using ArchitectureAnalyzer.Tests.AnalyzerRules.Matchers;
 using ArchitectureAnalyzer.Tests.Helper;
 
 namespace ArchitectureAnalyzer.Tests.AnalyzerRules.Rules;
