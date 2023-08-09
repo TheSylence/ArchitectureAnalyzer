@@ -6,59 +6,124 @@ namespace ArchitectureAnalyzer.Tests.AnalyzerRules.Rules;
 
 public sealed class RelatedTypeExistsRuleTests
 {
-	private readonly RelatedTypeExistsRule _sut = new();
-
-	[Fact]
-	public void DoesNotViolate_WhenNoTypeMatches()
+	public sealed class Required
 	{
-		// Arrange
-		var compilation = CompilationBuilder.Compile("class A{}");
+		private readonly RelatedTypeExistsRule _sut = new();
 
-		var symbol = new SymbolBuilder().Build();
+		[Fact]
+		public void DoesNotViolate_WhenNoTypeMatches()
+		{
+			// Arrange
+			var compilation = CompilationBuilder.Compile("class A{}");
 
-		_sut.ForTypes = new NameMatcher { Name = "B" };
-		_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+			var symbol = new SymbolBuilder().Build();
 
-		// Act
-		var result = _sut.Evaluate(symbol, compilation);
+			_sut.ForTypes = new NameMatcher { Name = "B" };
+			_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
 
-		// Assert
-		result.Should().BeNull();
+			// Act
+			var result = _sut.Evaluate(symbol, compilation);
+
+			// Assert
+			result.Should().BeNull();
+		}
+
+		[Fact]
+		public void DoesNotViolate_WhenTypeExists()
+		{
+			// Arrange
+			var compilation = CompilationBuilder.Compile("class A{} class RelatedA{}");
+
+			var symbol = new SymbolBuilder().WithName("A").Build();
+
+			_sut.ForTypes = new NameMatcher { Name = "A" };
+			_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+
+			// Act
+			var result = _sut.Evaluate(symbol, compilation);
+
+			// Assert
+			result.Should().BeNull();
+		}
+
+		[Fact]
+		public void Violates_WhenTypeDoesNotExist()
+		{
+			// Arrange
+			var compilation = CompilationBuilder.Compile("class A{}");
+
+			var symbol = new SymbolBuilder().WithName("A").Build();
+
+			_sut.ForTypes = new NameMatcher { Name = "A" };
+			_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+
+			// Act
+			var result = _sut.Evaluate(symbol, compilation);
+
+			// Assert
+			result.Should().NotBeNull();
+		}
 	}
 
-	[Fact]
-	public void DoesNotViolate_WhenTypeExists()
+	public sealed class Forbidden
 	{
-		// Arrange
-		var compilation = CompilationBuilder.Compile("class A{} class RelatedA{}");
+		private readonly RelatedTypeExistsRule _sut = new();
 
-		var symbol = new SymbolBuilder().WithName("A").Build();
+		[Fact]
+		public void DoesNotViolate_WhenTypeDoesNotExist()
+		{
+			// Arrange
+			var compilation = CompilationBuilder.Compile("class A{}");
 
-		_sut.ForTypes = new NameMatcher { Name = "A" };
-		_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+			var symbol = new SymbolBuilder().WithName("A").Build();
 
-		// Act
-		var result = _sut.Evaluate(symbol, compilation);
+			_sut.ForTypes = new NameMatcher { Name = "A" };
+			_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+			_sut.Forbidden = true;
 
-		// Assert
-		result.Should().BeNull();
-	}
+			// Act
+			var result = _sut.Evaluate(symbol, compilation);
 
-	[Fact]
-	public void Violates_WhenTypeDoesNotExist()
-	{
-		// Arrange
-		var compilation = CompilationBuilder.Compile("class A{}");
+			// Assert
+			result.Should().BeNull();
+		}
 
-		var symbol = new SymbolBuilder().WithName("A").Build();
+		[Fact]
+		public void DoesNotViolate_WhenNoTypeMatches()
+		{
+			// Arrange
+			var compilation = CompilationBuilder.Compile("class A{}");
 
-		_sut.ForTypes = new NameMatcher { Name = "A" };
-		_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+			var symbol = new SymbolBuilder().Build();
 
-		// Act
-		var result = _sut.Evaluate(symbol, compilation);
+			_sut.ForTypes = new NameMatcher { Name = "B" };
+			_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+			_sut.Forbidden = true;
 
-		// Assert
-		result.Should().NotBeNull();
+			// Act
+			var result = _sut.Evaluate(symbol, compilation);
+
+			// Assert
+			result.Should().BeNull();
+		}
+
+		[Fact]
+		public void Violates_WhenTypeExists()
+		{
+			// Arrange
+			var compilation = CompilationBuilder.Compile("class A{} class RelatedA{}");
+
+			var symbol = new SymbolBuilder().WithName("A").Build();
+
+			_sut.ForTypes = new NameMatcher { Name = "A" };
+			_sut.RelatedType = new NameMatcher { Name = "Related%type.Name%" };
+			_sut.Forbidden = true;
+
+			// Act
+			var result = _sut.Evaluate(symbol, compilation);
+
+			// Assert
+			result.Should().NotBeNull();
+		}
 	}
 }

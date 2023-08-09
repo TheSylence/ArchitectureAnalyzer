@@ -7,113 +7,122 @@ namespace ArchitectureAnalyzer.Tests.AnalyzerRules.Rules;
 
 public sealed class MustInheritRuleTests
 {
-	private readonly MustInheritRule _sut = new();
-	private readonly Compilation _compilation = default!;
-
-	[Fact]
-	public void DoesNotViolate_WhenForbidden_WhenTypeIsNotInherited()
+	public sealed class Required
 	{
-		// Arrange
-		var baseType = new SymbolBuilder().Build();
-		var symbol = new SymbolBuilder().Build();
-		var forTypes = MockMatcher.Create(true, symbol);
+		private readonly MustInheritRule _sut = new();
+		private readonly Compilation _compilation = default!;
 
-		_sut.Forbidden = true;
-		_sut.ForTypes = forTypes;
-		_sut.BaseType = MockMatcher.Create(true, baseType);
+		[Fact]
+		public void DoesNotViolate_WhenTypeIsInherited()
+		{
+			// Arrange
+			var baseType = new SymbolBuilder().Build();
+			var symbol = new SymbolBuilder().WithBaseType(baseType).Build();
+			var forTypes = MockMatcher.Create(true, symbol);
 
-		// Act
-		var result = _sut.Evaluate(symbol, _compilation);
+			_sut.ForTypes = forTypes;
+			_sut.BaseType = MockMatcher.Create(true, baseType);
 
-		// Assert
-		result.Should().BeNull();
+			// Act
+			var result = _sut.Evaluate(symbol, _compilation);
+
+			// Assert
+			result.Should().BeNull();
+		}
+
+		[Fact]
+		public void DoesNotViolate_WhenTypeIsNotMatched()
+		{
+			// Arrange
+			var symbol = new SymbolBuilder().Build();
+			var forTypes = MockMatcher.Create(false, symbol);
+
+			_sut.ForTypes = forTypes;
+
+			// Act
+			var result = _sut.Evaluate(symbol, _compilation);
+
+			// Assert
+			result.Should().BeNull();
+		}
+
+		[Fact]
+		public void Violates_WhenTypeIsNotInherited()
+		{
+			// Arrange
+			var baseType = new SymbolBuilder().Build();
+			var symbol = new SymbolBuilder().Build();
+			var forTypes = MockMatcher.Create(true, symbol);
+
+			_sut.ForTypes = forTypes;
+			_sut.BaseType = MockMatcher.Create(true, baseType);
+
+			// Act
+			var result = _sut.Evaluate(symbol, _compilation);
+
+			// Assert
+			result.Should().NotBeNull();
+		}
 	}
 
-	[Fact]
-	public void DoesNotViolate_WhenForbidden_WhenTypeIsNotMatched()
+	public sealed class Forbidden
 	{
-		// Arrange
-		var symbol = new SymbolBuilder().Build();
-		var forTypes = MockMatcher.Create(false, symbol);
+		private readonly MustInheritRule _sut = new();
+		private readonly Compilation _compilation = default!;
 
-		_sut.Forbidden = true;
-		_sut.ForTypes = forTypes;
+		[Fact]
+		public void DoesNotViolate_WhenTypeIsNotInherited()
+		{
+			// Arrange
+			var baseType = new SymbolBuilder().Build();
+			var symbol = new SymbolBuilder().Build();
+			var forTypes = MockMatcher.Create(true, symbol);
 
-		// Act
-		var result = _sut.Evaluate(symbol, _compilation);
+			_sut.Forbidden = true;
+			_sut.ForTypes = forTypes;
+			_sut.BaseType = MockMatcher.Create(true, baseType);
 
-		// Assert
-		result.Should().BeNull();
-	}
+			// Act
+			var result = _sut.Evaluate(symbol, _compilation);
 
-	[Fact]
-	public void DoesNotViolate_WhenTypeIsInherited()
-	{
-		// Arrange
-		var baseType = new SymbolBuilder().Build();
-		var symbol = new SymbolBuilder().WithBaseType(baseType).Build();
-		var forTypes = MockMatcher.Create(true, symbol);
+			// Assert
+			result.Should().BeNull();
+		}
 
-		_sut.ForTypes = forTypes;
-		_sut.BaseType = MockMatcher.Create(true, baseType);
+		[Fact]
+		public void DoesNotViolate_WhenTypeIsNotMatched()
+		{
+			// Arrange
+			var symbol = new SymbolBuilder().Build();
+			var forTypes = MockMatcher.Create(false, symbol);
 
-		// Act
-		var result = _sut.Evaluate(symbol, _compilation);
+			_sut.Forbidden = true;
+			_sut.ForTypes = forTypes;
 
-		// Assert
-		result.Should().BeNull();
-	}
+			// Act
+			var result = _sut.Evaluate(symbol, _compilation);
 
-	[Fact]
-	public void DoesNotViolate_WhenTypeIsNotMatched()
-	{
-		// Arrange
-		var symbol = new SymbolBuilder().Build();
-		var forTypes = MockMatcher.Create(false, symbol);
+			// Assert
+			result.Should().BeNull();
+		}
 
-		_sut.ForTypes = forTypes;
+		[Fact]
+		public void Violates_WhenTypeIsInherited()
+		{
+			// Arrange
+			var baseType = new SymbolBuilder().Build();
+			var symbol = new SymbolBuilder().WithBaseType(baseType).Build();
+			var forTypes = MockMatcher.Create(true, symbol);
 
-		// Act
-		var result = _sut.Evaluate(symbol, _compilation);
+			_sut.Forbidden = true;
+			_sut.ForTypes = forTypes;
+			_sut.BaseType = MockMatcher.Create(true, baseType);
 
-		// Assert
-		result.Should().BeNull();
-	}
+			// Act
+			var result = _sut.Evaluate(symbol, _compilation);
 
-	[Fact]
-	public void Violates_WhenForbidden_WhenTypeIsInherited()
-	{
-		// Arrange
-		var baseType = new SymbolBuilder().Build();
-		var symbol = new SymbolBuilder().WithBaseType(baseType).Build();
-		var forTypes = MockMatcher.Create(true, symbol);
-
-		_sut.Forbidden = true;
-		_sut.ForTypes = forTypes;
-		_sut.BaseType = MockMatcher.Create(true, baseType);
-
-		// Act
-		var result = _sut.Evaluate(symbol, _compilation);
-
-		// Assert
-		result.Should().NotBeNull();
-	}
-
-	[Fact]
-	public void Violates_WhenTypeIsNotInherited()
-	{
-		// Arrange
-		var baseType = new SymbolBuilder().Build();
-		var symbol = new SymbolBuilder().Build();
-		var forTypes = MockMatcher.Create(true, symbol);
-
-		_sut.ForTypes = forTypes;
-		_sut.BaseType = MockMatcher.Create(true, baseType);
-
-		// Act
-		var result = _sut.Evaluate(symbol, _compilation);
-
-		// Assert
-		result.Should().NotBeNull();
+			// Assert
+			result.Should().NotBeNull();
+		}
 	}
 }
