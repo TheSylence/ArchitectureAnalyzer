@@ -96,4 +96,17 @@ public sealed class NamespaceMatcherTests
 		// Assert
 		result.Should().BeTrue();
 	}
+
+	[Fact]
+	public void ToString_ProducesDisplayString()
+	{
+		// Arrange
+		_sut.Namespace = "Test";
+
+		// Act
+		var result = _sut.ToString();
+
+		// Assert
+		result.Should().Be("Namespace: Test");
+	}
 }

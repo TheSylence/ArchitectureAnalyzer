@@ -16,4 +16,6 @@ internal sealed class NamespaceMatcher : WildcardMatcher
 		return Matches(symbol.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
 			namespaceName);
 	}
+
+	public override string ToString() => $"Namespace: {Namespace}";
 }
