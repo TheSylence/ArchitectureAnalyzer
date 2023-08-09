@@ -1,9 +1,8 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace ArchitectureAnalyzer.AnalyzerRules.Matchers;
 
-internal sealed class FullNameMatcher : Matcher
+internal sealed class FullNameMatcher : WildcardMatcher
 {
 	public string FullName { get; set; } = default!;
 	
@@ -12,16 +11,9 @@ internal sealed class FullNameMatcher : Matcher
 		if (string.IsNullOrWhiteSpace(FullName))
 			return false;
 
-		var fullName = FullName;
-		if(!fullName.StartsWith("global::"))
-			fullName = "global::" + fullName;
+		var fullName = Prefix(FullName, "global::");
 
-		var regex = new Regex(
-			"^" + Regex.Escape(fullName).Replace(@"\*", ".*").Replace(@"\?", ".") + "$",
-			RegexOptions.IgnoreCase | RegexOptions.Singleline
-		);
-
-		return regex.IsMatch(symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+		return Matches(symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), fullName);
 	}
 
 	public override string ToString() => $"FullName: {FullName}";

@@ -1,9 +1,8 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace ArchitectureAnalyzer.AnalyzerRules.Matchers;
 
-internal sealed class NameMatcher : Matcher
+internal sealed class NameMatcher : WildcardMatcher
 {
 	public string Name { get; set; } = default!;
 
@@ -12,12 +11,7 @@ internal sealed class NameMatcher : Matcher
 		if (string.IsNullOrWhiteSpace(Name))
 			return false;
 
-		var regex = new Regex(
-			"^" + Regex.Escape(Name).Replace(@"\*", ".*").Replace(@"\?", ".") + "$",
-			RegexOptions.IgnoreCase | RegexOptions.Singleline
-		);
-
-		return regex.IsMatch(symbol.Name);
+		return Matches(symbol.Name, Name);
 	}
 
 	public override string ToString() => $"Name: {Name}";
