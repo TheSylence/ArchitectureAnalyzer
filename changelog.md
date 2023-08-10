@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Namespace matcher to check if type is contained in specific namespace
+- MustReference rule to enfore type must (not) reference other type
 
 ## [0.3] - 2023-08-08
 ### Added

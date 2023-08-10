@@ -99,6 +99,20 @@ public sealed class RuleReaderTests
 	}
 
 	[Fact]
+	public void Reads_MustReferenceRule()
+	{
+		// Arrange
+		const string json =
+			"""{ "rules": [{ "mustReference": { "forTypes": {}, "reference": {} } }] }""";
+
+		// Act
+		var actual = _sut.Read(json).ToList();
+
+		// Assert
+		actual.Should().ContainSingle(r => r is MustReferenceRule);
+	}
+
+	[Fact]
 	public void Reads_RelatedTypeExistsRule()
 	{
 		// Arrange

@@ -28,6 +28,8 @@ Description is a string that describes the rule. It does not affect the rule or 
 | AA0004  | [mustInherit](AA0004.md)       | true      |
 | AA0005  | [relatedTypeExists](AA0005.md) | false     |
 | AA0006  | [relatedTypeExists](AA0006.md) | true      |
+| AA0007  | [mustReference](AA0007.md)     | false     |
+| AA0008  | [mustReference](AA0008.md)     | true      |
 
 # Matchers
 

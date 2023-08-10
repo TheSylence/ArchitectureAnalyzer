@@ -12,6 +12,8 @@ internal static class Diagnostics
 		yield return MustNotInherit;
 		yield return RelatedTypeExists;
 		yield return RelatedTypeMustNotExist;
+		yield return MustReference;
+		yield return MustNotReference;
 	}
 
 	public static readonly DiagnosticDescriptor MustImplement = new(
@@ -42,6 +44,22 @@ internal static class Diagnostics
 		"AA0004",
 		"Inherits forbidden type",
 		"Type '{0}' inherits '{1}'",
+		"Design",
+		DiagnosticSeverity.Warning,
+		true);
+
+	public static readonly DiagnosticDescriptor MustNotReference = new(
+		"AA0008",
+		"References forbidden type",
+		"Type '{0}' references '{1}'",
+		"Design",
+		DiagnosticSeverity.Warning,
+		true);
+
+	public static readonly DiagnosticDescriptor MustReference = new(
+		"AA0007",
+		"Does not reference required type",
+		"Type '{0}' does not reference '{1}'",
 		"Design",
 		DiagnosticSeverity.Warning,
 		true);

@@ -14,60 +14,70 @@ public sealed class RuleReaderIntegrationTests
 	{
 		// Arrange
 		const string json = """
-		                    {
-		                    "rules": [
-		                    {
-		                    "mustImplement": {
-		                    "forTypes": {
-		                    "and": [{ "name": "*MustImplementName" }, { "name": "Start*" }]
-		                    },
-		                    "interface": { "name": "MustImplementInterface" }
-		                    }
-		                    },
-		                    {
-		                    "mustInherit": {
-		                    "forTypes": { "fullName": "MustInheritFullName" },
-		                    "baseType": { "fullName": "MustInheritBaseType" }
-		                    }
-		                    },
-		                    {
-		                    "mustImplement": {
-		                    "forbidden": true,
-		                    "forTypes": {
-		                    "generic": {
-		                    "type": { "name": "GenericType" },
-		                    "typeArguments": [{ "fullName": "System.String" }]
-		                    }
-		                    },
-		                    "interface": { "name": "MustNotImplementInterface" }
-		                    }
-		                    },
-		                    {
-		                    "mustInherit": {
-		                    "forbidden": true,
-		                    "forTypes": { "not": { "name": "MustNotInheritName" } },
-		                    "baseType": {
-		                    "or": [
-		                    { "name": "MustNotInheritBaseType" },
-		                    { "fullName": "MustNotInheritFullBaseType" }
-		                    ]
-		                    }
-		                    }
-		                    },
-		                    {
-		                    "relatedTypeExists": {
-		                    "relatedType": {
-		                    "implements": { "generic": {"type": {"name": "IValidator"}, "typeArguments": [ {"fullName": "%type.FullName%"}] } }
-		                    },
-		                    "forTypes": {
-		                    "name": "*Request"
-		                    }
-		                    }
-		                    }
-		                    ]
-		                    }
-
-		                    """;
+{
+  "rules": [
+    {
+      "mustImplement": {
+        "forTypes": {
+          "and": [{ "name": "*MustImplementName" }, { "name": "Start*" }]
+        },
+        "interface": { "name": "MustImplementInterface" }
+      }
+    },
+    {
+      "mustInherit": {
+        "forTypes": { "fullName": "MustInheritFullName" },
+        "baseType": { "fullName": "MustInheritBaseType" }
+      }
+    },
+    {
+      "mustImplement": {
+        "forbidden": true,
+        "forTypes": {
+          "generic": {
+            "type": { "name": "GenericType" },
+            "typeArguments": [{ "fullName": "System.String" }]
+          }
+        },
+        "interface": { "name": "MustNotImplementInterface" }
+      }
+    },
+    {
+      "mustInherit": {
+        "forbidden": true,
+        "forTypes": { "not": { "name": "MustNotInheritName" } },
+        "baseType": {
+          "or": [
+            { "name": "MustNotInheritBaseType" },
+            { "fullName": "MustNotInheritFullBaseType" }
+          ]
+        }
+      }
+    },
+    {
+      "relatedTypeExists": {
+        "relatedType": {
+          "implements": {
+            "generic": {
+              "type": { "name": "IValidator" },
+              "typeArguments": [{ "fullName": "%type.FullName%" }]
+            }
+          }
+        },
+        "forTypes": {
+          "name": "*Request"
+        }
+      }
+    },
+	{
+		"mustReference": {
+			"forTypes": { "namespace": "*.Tests" },
+			"reference": { "name": "*Service" }
+		}
+	}
+  ]
+}
+""";
 
 		// Act
 		var rules = _sut.Read(json).ToList();
@@ -75,7 +85,7 @@ public sealed class RuleReaderIntegrationTests
 		// Assert
 		using var _ = new AssertionScope();
 
-		rules.Should().HaveCount(5);
+		rules.Should().HaveCount(6);
 
 		rules[0].Should().BeOfType<MustImplementRule>();
 		{
@@ -155,6 +165,15 @@ public sealed class RuleReaderIntegrationTests
 				.Which.Type.Should().BeOfType<GenericMatcher>()
 				.Which.TypeArguments.Should().HaveCount(1).And.ContainSingle(x =>
 					x is FullNameMatcher && x.As<FullNameMatcher>().FullName == "%type.FullName%");
+		}
+
+		rules[5].Should().BeOfType<MustReferenceRule>();
+		{
+			var rule = rules[5].As<MustReferenceRule>();
+
+			rule.ForTypes.Should().BeOfType<NamespaceMatcher>().Which.Namespace.Should().Be("*.Tests");
+			
+			rule.Reference.Should().BeOfType<NameMatcher>().Which.Name.Should().Be("*Service");
 		}
 	}
 }

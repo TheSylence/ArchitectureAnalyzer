@@ -6,6 +6,7 @@ A set of Roslyn analyzers to enforce architectural rules.
 - Type must (not) implement a specified interface.
 - Type must (not) inherit from a specified type.
 - Related type must (not) exist.
+- Type must (not) be referenced from other type.
 
 ## Links
 
