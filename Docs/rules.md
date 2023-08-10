@@ -20,16 +20,16 @@ Description is a string that describes the rule. It does not affect the rule or 
 
 ## Existing rules
 
-| Rule ID | Key                            | Forbidden |
-|---------|--------------------------------|-----------|
-| AA0001  | [mustImplement](AA0001.md)     | false     |
-| AA0002  | [mustInherit](AA0002.md)       | false     |
-| AA0003  | [mustImplement](AA0003.md)     | true      |
-| AA0004  | [mustInherit](AA0004.md)       | true      |
-| AA0005  | [relatedTypeExists](AA0005.md) | false     |
-| AA0006  | [relatedTypeExists](AA0006.md) | true      |
-| AA0007  | [mustReference](AA0007.md)     | false     |
-| AA0008  | [mustReference](AA0008.md)     | true      |
+| Rule ID | Key                                       | Forbidden |
+|---------|-------------------------------------------|-----------|
+| AA0001  | [mustImplement](mustImplement.md)         | false     |
+| AA0002  | [mustInherit](mustInherit.md)             | false     |
+| AA0003  | [mustImplement](mustImplement.md)         | true      |
+| AA0004  | [mustInherit](mustInherit.md)             | true      |
+| AA0005  | [relatedTypeExists](relatedTypeExists.md) | false     |
+| AA0006  | [relatedTypeExists](relatedTypeExists.md) | true      |
+| AA0007  | [mustReference](mustReference.md)         | false     |
+| AA0008  | [mustReference](mustReference.md)         | true      |
 
 # Matchers
 

@@ -1,23 +1,22 @@
 ﻿# RelatedTypeExists
 
 
-| Category                | Value                                                |
-|-------------------------|------------------------------------------------------|
-| **Rule Id**             | AA0005                                               |
-| **Summary**             | Type that is related to the matched type must exist. |
-| **Supported Languages** | CSharp                                               |
-| **Tags**                | Design                                               |
-| **Severity**            | Warning                                              |
+| Category                | Required                                             | Forbidden                                                |
+|-------------------------|------------------------------------------------------|----------------------------------------------------------|
+| **Rule Id**             | AA0005                                               | AA0006                                                   |
+| **Summary**             | Type that is related to the matched type must exist. | Type that is related to the matched type must not exist. |
+| **Supported Languages** | CSharp                                               | CSharp                                                   |
+| **Tags**                | Design                                               | Design                                                   |
+| **Severity**            | Warning                                              | Warning                                                  |
 
-## Configuration
-
-Schema:
+## Schema
     
 ```json
 {
     "relatedTypeExists": {
-        "relatedType": "<matcher>",
-        "forTypes": "<matcher>"
+        "forbidden": "<boolean>",
+      "forTypes": "<matcher>",
+        "relatedType": "<matcher>"
     }
 }
 ```
