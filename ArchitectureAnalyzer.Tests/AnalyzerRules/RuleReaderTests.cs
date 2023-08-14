@@ -19,29 +19,55 @@ public sealed class RuleReaderTests
 	private readonly RuleReader _sut;
 
 	[Fact]
+	public void Ignores_NonObjectRules()
+	{
+		// Arrange
+		const string json = """{ "rules": [1, 2, 3] }""";
+
+		// Act
+		var actual = _sut.Read(json).ToList();
+
+		// Assert
+		actual.Should().BeEmpty();
+	}
+
+	[Fact]
+	public void IsEmpty_WhenNoRulesArePresent()
+	{
+		// Arrange
+		const string json = """{ "rules": [] }""";
+
+		// Act
+		var actual = _sut.Read(json).ToList();
+
+		// Assert
+		actual.Should().BeEmpty();
+	}
+
+	[Fact]
+	public void IsEmpty_WhenRuleElementIsMissing()
+	{
+		// Arrange
+		const string json = "{ }";
+
+		// Act
+		var actual = _sut.Read(json).ToList();
+
+		// Assert
+		actual.Should().BeEmpty();
+	}
+
+	[Fact]
 	public void MustImplement_Throws_WhenInterfaceIsMissing()
 	{
 		// Arrange
 		const string json = """{ "rules": [{ "mustImplement": { "forTypes": {} } }]}""";
 
 		// Act
-		var actual = Record.Exception(() => _sut.Read(json).ToList());
+		var action = () => _sut.Read(json).ToList();
 
 		// Assert
-		actual.Should().BeOfType<AnalyzerException>().Which.Message.Should().Contain("interface");
-	}
-
-	[Fact]
-	public void MustImplement_Throws_WhenTypeMatcherIsMissing()
-	{
-		// Arrange
-		const string json = """{ "rules": [{ "mustImplement": { "interface": {} } }]}""";
-
-		// Act
-		var actual = Record.Exception(() => _sut.Read(json).ToList());
-
-		// Assert
-		actual.Should().BeOfType<AnalyzerException>().Which.Message.Should().Contain("forTypes");
+		action.Should().Throw<AnalyzerException>().WithMessage("*interface*");
 	}
 
 	[Fact]
@@ -51,23 +77,24 @@ public sealed class RuleReaderTests
 		const string json = """{ "rules": [{ "mustInherit": { "forTypes": {} } }]}""";
 
 		// Act
-		var actual = Record.Exception(() => _sut.Read(json).ToList());
+		var action = () => _sut.Read(json).ToList();
 
 		// Assert
-		actual.Should().BeOfType<AnalyzerException>().Which.Message.Should().Contain("baseType");
+		action.Should().Throw<AnalyzerException>().WithMessage("*baseType*");
 	}
 
 	[Fact]
-	public void MustInherit_Throws_WhenTypeMatcherIsMissing()
+	public void MustReference_Throws_WhenReferenceIsMissing()
 	{
 		// Arrange
-		const string json = """{ "rules": [{ "mustInherit": { "baseType": {} } }]}""";
+		const string json =
+			"""{ "rules": [{ "mustReference": { "forTypes": {} } }] }""";
 
 		// Act
-		var actual = Record.Exception(() => _sut.Read(json).ToList());
+		var action = () => _sut.Read(json).ToList();
 
 		// Assert
-		actual.Should().BeOfType<AnalyzerException>().Which.Message.Should().Contain("forTypes");
+		action.Should().Throw<AnalyzerException>().WithMessage("*reference*");
 	}
 
 	[Fact]
@@ -127,16 +154,30 @@ public sealed class RuleReaderTests
 	}
 
 	[Fact]
+	public void RelatedTypeExists_Throws_WhenRelatedTypeIsMissing()
+	{
+		// Arrange
+		const string json =
+			"""{ "rules": [{ "relatedTypeExists": { "forTypes": {} } }] }""";
+
+		// Act
+		var action = () => _sut.Read(json).ToList();
+
+		// Assert
+		action.Should().Throw<AnalyzerException>().WithMessage("*relatedType*");
+	}
+
+	[Fact]
 	public void Throws_WhenJsonIsInvalid()
 	{
 		// Arrange
 		const string json = "invalid json";
 
 		// Act
-		var ex = Record.Exception(() => _sut.Read(json).ToList());
+		var action = () => _sut.Read(json).ToList();
 
 		// Assert
-		ex.Should().NotBeNull();
+		action.Should().Throw<Exception>();
 	}
 
 	[Fact]
@@ -147,9 +188,26 @@ public sealed class RuleReaderTests
 			"""{ "rules": [{ "unknownRuleType": {}}] }""";
 
 		// Act
-		var ex = Record.Exception(() => _sut.Read(json).ToList());
+		var action = () => _sut.Read(json).ToList();
 
 		// Assert
-		ex.Should().NotBeNull();
+		action.Should().Throw<Exception>();
+	}
+
+	[Theory]
+	[InlineData("mustImplement")]
+	[InlineData("mustInherit")]
+	[InlineData("relatedTypeExists")]
+	[InlineData("mustReference")]
+	public void Throws_WhenTypeMatcherIsMissing(string rule)
+	{
+		// Arrange
+		var json = "{ \"rules\": [{ \"" + rule + "\": {} }]}";
+
+		// Act
+		var action = () => _sut.Read(json).ToList();
+
+		// Assert
+		action.Should().Throw<AnalyzerException>().WithMessage("*forTypes*");
 	}
 }

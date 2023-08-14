@@ -28,8 +28,6 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private AndMatcher ReadAnd(JsonObject matcher)
 	{
 		var inner = matcher["and"].AsJsonArray;
-		if (inner is null)
-			throw new AnalyzerException("And matcher must have a matcher as child.");
 
 		var innerMatchers = new List<Matcher>();
 		foreach (var m in inner)
@@ -55,8 +53,6 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private GenericMatcher ReadGeneric(JsonObject matcher)
 	{
 		var inner = matcher["generic"].AsJsonObject;
-		if (inner is null)
-			throw new AnalyzerException("Generic matcher must have a matcher as child.");
 
 		var type = inner["type"].AsJsonObject;
 		if (type is null)
@@ -84,8 +80,6 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private ImplementsMatcher ReadImplements(JsonObject matcher)
 	{
 		var inner = matcher["implements"].AsJsonObject;
-		if (inner is null)
-			throw new AnalyzerException("Implements matcher must have a matcher as child.");
 
 		var typeMatcher = ReadMatcher(inner);
 
@@ -98,8 +92,6 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private InheritsMatcher ReadInherits(JsonObject matcher)
 	{
 		var inner = matcher["inherits"].AsJsonObject;
-		if (inner is null)
-			throw new AnalyzerException("Inherits matcher must have a matcher as child.");
 
 		var typeMatcher = ReadMatcher(inner);
 
@@ -138,9 +130,6 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private NotMatcher ReadNot(JsonObject matcher)
 	{
 		var innerMatcher = matcher["not"].AsJsonObject;
-		if (innerMatcher is null)
-			throw new AnalyzerException("Not matcher must have a matcher as child.");
-
 		return new NotMatcher
 		{
 			Matcher = ReadMatcher(innerMatcher)
@@ -150,8 +139,6 @@ internal sealed class MatchReader : JsonReader, IMatchReader
 	private OrMatcher ReadOr(JsonObject matcher)
 	{
 		var inner = matcher["or"].AsJsonArray;
-		if (inner is null)
-			throw new AnalyzerException("Or matcher must have a matcher as child.");
 
 		var innerMatchers = new List<Matcher>();
 		foreach (var m in inner)

@@ -111,9 +111,9 @@ public sealed class GenericMatcherTests
 		_sut.Type = new GenericMatcher();
 
 		// Act
-		var ex = Record.Exception(() => _sut.Matches(symbol));
+		var action = () => _sut.Matches(symbol);
 
 		// Assert
-		ex.Should().BeOfType<InvalidOperationException>();
+		action.Should().Throw<InvalidOperationException>();
 	}
 }

@@ -191,4 +191,84 @@ public sealed class MatchReaderTests
 			.ContainSingle(m => (m as NameMatcher)!.Name == "InterfaceName")
 			.And.ContainSingle(m => (m as NameMatcher)!.Name == "otherName");
 	}
+
+	[Fact]
+	public void Throws_WhenAndMatcherIsEmpty()
+	{
+		// Arrange
+		const string json =
+			"""{ "and": [ "", "" ] }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		Action act = () => _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		act.Should().Throw<AnalyzerException>();
+	}
+
+	[Fact]
+	public void Throws_WhenGenericMatcher_DoesNotContainType()
+	{
+		// Arrange
+		const string json =
+			"""{ "generic": {} }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		Action act = () => _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		act.Should().Throw<AnalyzerException>().WithMessage("*type as child*");
+	}
+
+	[Fact]
+	public void Throws_WhenGenericMatcher_DoesNotContainTypeArguments()
+	{
+		// Arrange
+		const string json =
+			"""{ "generic": { "type": {} } }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		Action act = () => _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		act.Should().Throw<AnalyzerException>().WithMessage("*type arguments as child*");
+	}
+
+	[Fact]
+	public void Throws_WhenOrMatcherIsEmpty()
+	{
+		// Arrange
+		const string json =
+			"""{ "or": [ "", "" ] }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		Action act = () => _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		act.Should().Throw<AnalyzerException>();
+	}
+
+	[Fact]
+	public void Throws_WhenUnknownMatcher()
+	{
+		// Arrange
+		const string json =
+			"""{ "unknown": "value" }""";
+
+		var jsonObject = JsonValue.Parse(json).AsJsonObject!;
+
+		// Act
+		Action act = () => _sut.ReadMatcher(jsonObject);
+
+		// Assert
+		act.Should().Throw<NotSupportedException>();
+	}
 }
