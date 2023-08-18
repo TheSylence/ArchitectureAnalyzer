@@ -12,9 +12,10 @@ internal sealed class NamespaceMatcher : Matcher
 		if (string.IsNullOrWhiteSpace(Namespace))
 			return false;
 
-		var namespaceName = Namespace.Prefix("global::");
+		var wildcard = Namespace.Prefix("global::");
+		var namespaceName = symbol.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
-		return namespaceName.Matches(symbol.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+		return wildcard.Matches(namespaceName);
 	}
 
 	public override string ToString() => $"Namespace: {Namespace}";

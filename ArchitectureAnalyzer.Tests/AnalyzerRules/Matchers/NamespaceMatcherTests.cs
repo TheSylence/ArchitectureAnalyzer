@@ -84,6 +84,8 @@ public sealed class NamespaceMatcherTests
 	[InlineData("Test", "*Test")]
 	[InlineData("Test", "*Test*")]
 	[InlineData("Test123", "Test*")]
+	[InlineData("Name.Space", "Name.*")]
+	[InlineData("Name.Space", "*.Space")]
 	public void Matches_WhenNamespaceMatchesWithWildcard(string ns, string wildcard)
 	{
 		// Arrange
