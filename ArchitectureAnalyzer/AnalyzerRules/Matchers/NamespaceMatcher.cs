@@ -1,8 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using ArchitectureAnalyzer.Helpers;
+using Microsoft.CodeAnalysis;
 
 namespace ArchitectureAnalyzer.AnalyzerRules.Matchers;
 
-internal sealed class NamespaceMatcher : WildcardMatcher
+internal sealed class NamespaceMatcher : Matcher
 {
 	public string Namespace { get; set; } = default!;
 
@@ -11,10 +12,9 @@ internal sealed class NamespaceMatcher : WildcardMatcher
 		if (string.IsNullOrWhiteSpace(Namespace))
 			return false;
 
-		var namespaceName = Prefix(Namespace, "global::");
+		var namespaceName = Namespace.Prefix("global::");
 
-		return Matches(symbol.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-			namespaceName);
+		return namespaceName.Matches(symbol.ContainingNamespace.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
 	}
 
 	public override string ToString() => $"Namespace: {Namespace}";

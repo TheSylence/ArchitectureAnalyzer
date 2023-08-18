@@ -30,6 +30,8 @@ Description is a string that describes the rule. It does not affect the rule or 
 | AA0006  | [relatedTypeExists](relatedTypeExists.md) | true      |
 | AA0007  | [mustReference](mustReference.md)         | false     |
 | AA0008  | [mustReference](mustReference.md)         | true      |
+| AA0009  | [mustBeInNamespace](mustBeInNamespace.md) | false     |
+| AA0010  | [mustBeInNamespace](mustBeInNamespace.md) | true      |
 
 # Matchers
 

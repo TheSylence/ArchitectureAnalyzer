@@ -34,6 +34,7 @@ internal sealed class RuleReader : JsonReader
 				"mustInherit" => ReadMustInheritRule(ruleData),
 				"relatedTypeExists" => ReadRelatedTypeExistsRule(ruleData),
 				"mustReference" => ReadMustReferenceRule(ruleData),
+				"mustBeInNamespace" => ReadMustBeInNamespaceRule(ruleData),
 				_ => throw new NotSupportedException($"Unknown rule type '{ruleType}'.")
 			};
 		}
@@ -42,6 +43,25 @@ internal sealed class RuleReader : JsonReader
 	private static string ReadDescription(JsonObject rule) => rule["description"].AsString ?? string.Empty;
 
 	private static bool ReadForbidden(JsonObject rule) => rule.ContainsKey("forbidden") && rule["forbidden"].AsBoolean;
+
+	private MustBeInNamespaceRule ReadMustBeInNamespaceRule(JsonObject rule)
+	{
+		var forTypes = rule["forTypes"].AsJsonObject;
+		if (forTypes is null)
+			throw new AnalyzerException("MustBeInNamespace rule must have a forTypes matcher.");
+
+		var @namespace = rule["namespace"].AsString;
+		if (@namespace is null)
+			throw new AnalyzerException("MustBeInNamespace rule must have a namespace.");
+
+		return new MustBeInNamespaceRule
+		{
+			ForTypes = _matchReader.ReadMatcher(forTypes),
+			Namespace = @namespace,
+			Forbidden = ReadForbidden(rule),
+			Description = ReadDescription(rule)
+		};
+	}
 
 	private MustImplementRule ReadMustImplementRule(JsonObject rule)
 	{

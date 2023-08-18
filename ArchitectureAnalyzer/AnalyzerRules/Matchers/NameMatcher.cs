@@ -1,8 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using ArchitectureAnalyzer.Helpers;
+using Microsoft.CodeAnalysis;
 
 namespace ArchitectureAnalyzer.AnalyzerRules.Matchers;
 
-internal sealed class NameMatcher : WildcardMatcher
+internal sealed class NameMatcher : Matcher
 {
 	public string Name { get; set; } = default!;
 
@@ -11,7 +12,7 @@ internal sealed class NameMatcher : WildcardMatcher
 		if (string.IsNullOrWhiteSpace(Name))
 			return false;
 
-		return Matches(symbol.Name, Name);
+		return Name.Matches(symbol.Name);
 	}
 
 	public override string ToString() => $"Name: {Name}";

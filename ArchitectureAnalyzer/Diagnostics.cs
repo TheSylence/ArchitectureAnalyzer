@@ -14,7 +14,17 @@ internal static class Diagnostics
 		yield return RelatedTypeMustNotExist;
 		yield return MustReference;
 		yield return MustNotReference;
+		yield return MustBeInNamespace;
+		yield return MustNotBeInNamespace;
 	}
+
+	public static readonly DiagnosticDescriptor MustBeInNamespace = new(
+		"AA0009",
+		"Must be in namespace",
+		"Type '{0}' must be in namespace '{1}'",
+		"Design",
+		DiagnosticSeverity.Warning,
+		true);
 
 	public static readonly DiagnosticDescriptor MustImplement = new(
 		"AA0001",
@@ -28,6 +38,14 @@ internal static class Diagnostics
 		"AA0002",
 		"Does not inherit required type",
 		"Type '{0}' does not inherit '{1}'",
+		"Design",
+		DiagnosticSeverity.Warning,
+		true);
+
+	public static readonly DiagnosticDescriptor MustNotBeInNamespace = new(
+		"AA0010",
+		"Must not be in namespace",
+		"Type '{0}' must not be in namespace '{1}'",
 		"Design",
 		DiagnosticSeverity.Warning,
 		true);

@@ -58,6 +58,20 @@ public sealed class RuleReaderTests
 	}
 
 	[Fact]
+	public void MustBeInNamespace_Throws_WhenNamespaceIsMissing()
+	{
+		// Arrange
+		const string json =
+			"""{ "rules": [{ "mustBeInNamespace": { "forTypes": {} } }] }""";
+
+		// Act
+		var action = () => _sut.Read(json).ToList();
+
+		// Assert
+		action.Should().Throw<AnalyzerException>().WithMessage("*namespace*");
+	}
+
+	[Fact]
 	public void MustImplement_Throws_WhenInterfaceIsMissing()
 	{
 		// Arrange
@@ -95,6 +109,20 @@ public sealed class RuleReaderTests
 
 		// Assert
 		action.Should().Throw<AnalyzerException>().WithMessage("*reference*");
+	}
+
+	[Fact]
+	public void Reads_MustBeInNamespaceRule()
+	{
+		// Arrange
+		const string json =
+			"""{ "rules": [{ "mustBeInNamespace": { "forTypes": {}, "namespace": "" } }] }""";
+
+		// Act
+		var actual = _sut.Read(json).ToList();
+
+		// Assert
+		actual.Should().ContainSingle(r => r is MustBeInNamespaceRule);
 	}
 
 	[Fact]
@@ -199,6 +227,7 @@ public sealed class RuleReaderTests
 	[InlineData("mustInherit")]
 	[InlineData("relatedTypeExists")]
 	[InlineData("mustReference")]
+	[InlineData("mustBeInNamespace")]
 	public void Throws_WhenTypeMatcherIsMissing(string rule)
 	{
 		// Arrange

@@ -9,6 +9,7 @@ internal sealed class NamespaceBuilder
 	public NamespaceBuilder WithName(string name)
 	{
 		_symbol.Name.Returns(name);
+		_symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Returns(name);
 		return this;
 	}
 

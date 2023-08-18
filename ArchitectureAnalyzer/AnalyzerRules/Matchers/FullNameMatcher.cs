@@ -1,8 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using ArchitectureAnalyzer.Helpers;
+using Microsoft.CodeAnalysis;
 
 namespace ArchitectureAnalyzer.AnalyzerRules.Matchers;
 
-internal sealed class FullNameMatcher : WildcardMatcher
+internal sealed class FullNameMatcher : Matcher
 {
 	public string FullName { get; set; } = default!;
 	
@@ -11,9 +12,9 @@ internal sealed class FullNameMatcher : WildcardMatcher
 		if (string.IsNullOrWhiteSpace(FullName))
 			return false;
 
-		var fullName = Prefix(FullName, "global::");
+		var fullName = FullName.Prefix("global::");
 
-		return Matches(symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), fullName);
+		return fullName.Matches(symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
 	}
 
 	public override string ToString() => $"FullName: {FullName}";
