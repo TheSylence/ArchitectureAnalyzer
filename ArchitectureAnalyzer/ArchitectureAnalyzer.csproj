@@ -19,9 +19,11 @@
         <PackageProjectUrl>https://github.com/TheSylence/ArchitectureAnalyzer</PackageProjectUrl>
         <RepositoryUrl>https://github.com/TheSylence/ArchitectureAnalyzer</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
+        <PackageReadmeFile>Readme.md</PackageReadmeFile>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -29,7 +31,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="NugetReadme.md" Pack="true" PackagePath="\"/>
+        <None Include="NugetReadme.md" Pack="true" PackagePath="\Readme.md"/>
+        <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="\" />
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     </ItemGroup>
 
     <ItemGroup>

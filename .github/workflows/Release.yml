@@ -37,7 +37,7 @@ jobs:
           run: dotnet test -c Release --no-build
           
         - name: Pack
-          run: dotnet pack -c Release --include-symbols /p:PackageVersion=${{ steps.tagName.outputs.tag }} /p:Version=${{ steps.tagName.outputs.tag }} /p:FileVersion=${{ steps.tagName.outputs.tag }} /p:AssemblyVersion=${{ steps.tagName.outputs.tag }} -o nupkg
+          run: dotnet pack -c Release /p:PackageVersion=${{ steps.tagName.outputs.tag }} /p:Version=${{ steps.tagName.outputs.tag }} /p:FileVersion=${{ steps.tagName.outputs.tag }} /p:AssemblyVersion=${{ steps.tagName.outputs.tag }} -o nupkg
           
         - name: Push nuget package
           run: dotnet nuget push ./nupkg/*.nupkg --skip-duplicate -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json

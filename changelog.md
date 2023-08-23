@@ -4,14 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5] - 2023-08-23
 ### Added
 - MustBeInNamespaceRule to check whether types are contained in a specific namespace
+
+### Fixed
+- Distributed nuget package not referenced as analyzer
 
 ## [0.4] - 2023-08-14
 ### Added
 - Namespace matcher to check if type is contained in specific namespace
-- MustReference rule to enfore type must (not) reference other type
+- MustReference rule to enforce type must (not) reference other type
 
 ## [0.3] - 2023-08-08
 ### Added
@@ -44,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MustNotInherit rule
 
 
+[0.5]: https://github.com/TheSylence/ArchitectureAnalyzer/compare/0.4...0.5
 [0.4]: https://github.com/TheSylence/ArchitectureAnalyzer/compare/0.3...0.4
 [0.3]: https://github.com/TheSylence/ArchitectureAnalyzer/compare/0.2...0.3
 [0.2]: https://github.com/TheSylence/ArchitectureAnalyzer/compare/0.1...0.2
