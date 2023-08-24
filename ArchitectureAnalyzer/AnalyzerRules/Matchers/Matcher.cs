@@ -5,4 +5,6 @@ namespace ArchitectureAnalyzer.AnalyzerRules.Matchers;
 internal abstract class Matcher
 {
 	public abstract bool Matches(INamedTypeSymbol symbol);
+
+	public abstract override string ToString();
 }
