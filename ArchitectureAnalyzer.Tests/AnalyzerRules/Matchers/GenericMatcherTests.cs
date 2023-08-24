@@ -116,4 +116,18 @@ public sealed class GenericMatcherTests
 		// Assert
 		action.Should().Throw<InvalidOperationException>();
 	}
+
+	[Fact]
+	public void ToString_ProducesDisplayString()
+	{
+		// Arrange
+		_sut.Type = new NameMatcher { Name = "Test" };
+		_sut.TypeArguments = new Matcher[] { new NameMatcher { Name = "T1" }, new NameMatcher { Name = "T2" } };
+
+		// Act
+		var result = _sut.ToString();
+
+		// Assert
+		result.Should().Be("Generic: {Name: Test}<{Name: T1},{Name: T2}>");
+	}
 }

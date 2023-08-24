@@ -33,4 +33,10 @@ internal sealed class GenericMatcher : Matcher
 
 		return true;
 	}
+
+	public override string ToString()
+	{
+		var typeArgs = string.Join(",", TypeArguments.Select(x => $"{{{x}}}"));
+		return $"Generic: {{{Type}}}<{typeArgs}>";
+	}
 }
