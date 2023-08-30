@@ -22,6 +22,6 @@ internal sealed class RelatedTypeExistsRule : Rule
 		if ((exists && !Forbidden) || (!exists && Forbidden))
 			return null;
 
-		return CreateDiagnostic(symbol, symbol.Name, RelatedType.ToString());
+		return CreateDiagnostic(symbol, symbol.Name, relatedTypeMatcher.ToString());
 	}
 }
