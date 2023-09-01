@@ -148,6 +148,36 @@ public sealed class MatchReplacerTests
 	}
 
 	[Fact]
+	public void Replaces_Nested_GenericMatcher()
+	{
+		// Arrange
+		var innerMatcher = new GenericMatcher
+		{
+			Type = _nameMatcher,
+			TypeArguments = new Matcher[] { _nameMatcher }
+		};
+
+		var outerMatcher = new ImplementsMatcher
+		{
+			Type = innerMatcher
+		};
+
+		var symbol = new SymbolBuilder().WithName("Name").Build();
+
+		// Act
+		var result = MatchReplacer.Replace(outerMatcher, symbol);
+
+		// Assert
+		result.Should().BeOfType<ImplementsMatcher>()
+			.Which.Type.Should().BeOfType<GenericMatcher>().Which.Type.Should().BeOfType<NameMatcher>().Which.Name
+			.Should().Be("Name");
+
+		result.Should().BeOfType<ImplementsMatcher>()
+			.Which.Type.Should().BeOfType<GenericMatcher>().Which.TypeArguments.Should()
+			.ContainSingle(x => x is NameMatcher && x.As<NameMatcher>().Name == "Name");
+	}
+
+	[Fact]
 	public void Replaces_OrMatcher()
 	{
 		// Arrange
