@@ -14,7 +14,13 @@ internal static class TypeSearcher
 			.Concat(GetNamespaces(compilation.Assembly.GlobalNamespace).SelectMany(a => a.GetTypeMembers()))
 			.Distinct(SymbolEqualityComparer.Default)
 			.Where(t => t?.CanBeReferencedByName == true)
-			.OfType<INamedTypeSymbol>();
+			.OfType<INamedTypeSymbol>()
+			.SelectMany(t => FindNestedTypes(t).Append(t));
+	}
+
+	private static IEnumerable<INamedTypeSymbol> FindNestedTypes(INamedTypeSymbol type)
+	{
+		return type.GetTypeMembers().SelectMany(t => FindNestedTypes(t).Append(t));
 	}
 
 	private static IEnumerable<INamespaceSymbol> GetNamespaces(IAssemblySymbol asm)

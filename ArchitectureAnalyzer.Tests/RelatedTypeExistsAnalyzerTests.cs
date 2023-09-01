@@ -6,33 +6,34 @@ namespace ArchitectureAnalyzer.Tests;
 public sealed class RelatedTypeExistsAnalyzerTests
 {
 	[Fact]
-	public async Task IsNotTriggered_WhenUsingGenericTypes()
+	public async Task DoesNotTriggerForNestedTypes()
 	{
 		var verifier = new CSharpAnalyzerTest<ArchitectureAnalyzer, FluentVerifier>
 		{
 			TestState =
 			{
-				Sources = { "public class TestCommand{}", "public class TestCommandHandler : ICommandHandler<TestCommand> {} public interface ICommandHandler<T>{}" },
+				Sources =
+				{
+					"namespace FluentValidation { public abstract class AbstractValidator<T>{} }",
+					"internal static class Test{ public sealed record Command {} public sealed class Validator : FluentValidation.AbstractValidator<Command>{} }"
+				},
 				AdditionalFiles =
 				{
-					("architecture.rules.json", @"
-						{
-						""rules"": [
-							{
-								""relatedTypeExists"": {
-								""relatedType"": { ""implements"": { ""generic"": { ""type"": { ""name"": ""ICommandHandler"" }, ""typeArguments"": [ { ""fullName"": ""%type.FullName%"" } ] } } },
-								""forTypes"": { ""name"": ""*Command"" }
-							}}
-						]
-						}")
+					("architecture.rules.json", @"{""rules"": [
+{
+  ""relatedTypeExists"": {
+    ""forTypes"": { ""and"": [{ ""name"": ""*Command"" }, { ""not"": { ""is"": ""abstract"" } }] },
+    ""relatedType"": { ""inherits"": { ""generic"": {""type"": {""name"": ""AbstractValidator""}, ""typeArguments"": [{""fullName"": ""%type.FullName%*""}]}} }
+  }
+}
+]}")
 				}
 			}
 		};
 
 		await verifier.RunAsync();
-		
 	}
-	
+
 	[Fact]
 	public async Task IsNotTriggered_WhenForbidden()
 	{
@@ -50,6 +51,37 @@ public sealed class RelatedTypeExistsAnalyzerTests
 								""relatedTypeExists"": {
 								""forbidden"": true,
 								""relatedType"": { ""name"": ""%type.Name%Handler"" },
+								""forTypes"": { ""name"": ""*Command"" }
+							}}
+						]
+						}")
+				}
+			}
+		};
+
+		await verifier.RunAsync();
+	}
+
+	[Fact]
+	public async Task IsNotTriggered_WhenUsingGenericTypes()
+	{
+		var verifier = new CSharpAnalyzerTest<ArchitectureAnalyzer, FluentVerifier>
+		{
+			TestState =
+			{
+				Sources =
+				{
+					"public class TestCommand{}",
+					"public class TestCommandHandler : ICommandHandler<TestCommand> {} public interface ICommandHandler<T>{}"
+				},
+				AdditionalFiles =
+				{
+					("architecture.rules.json", @"
+						{
+						""rules"": [
+							{
+								""relatedTypeExists"": {
+								""relatedType"": { ""implements"": { ""generic"": { ""type"": { ""name"": ""ICommandHandler"" }, ""typeArguments"": [ { ""fullName"": ""%type.FullName%"" } ] } } },
 								""forTypes"": { ""name"": ""*Command"" }
 							}}
 						]
